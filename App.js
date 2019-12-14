@@ -5,7 +5,7 @@ import Setting from './src/components/Setting';
 
 export default function App() {
   return (
-    <Setting />
+    <Me />
   );
 }
 
