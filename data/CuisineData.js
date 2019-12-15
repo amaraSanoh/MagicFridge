@@ -1,106 +1,106 @@
 export const CuisineData = [
     {
-        id: 1,
-        name: "African", 
+        label: "African",
+        value: "African" 
     }, 
     {
-        id: 2,
-        name: "American", 
+        label: "American", 
+        value: "American"
     }, 
     {
-        id: 3, 
-        name: "British"
+        label: "British", 
+        value: "British" 
     }, 
     {
-        id: 4, 
-        name: "Cajun"
+        label: "Cajun", 
+        value: "Cajun"
     }, 
     {
-        id: 5, 
-        name: "Caribbean"
+        label: "Caribbean", 
+        value: "Caribbean"
     }, 
     {
-        id: 6, 
-        name: "Chinese"
+        label: "Chinese", 
+        value: "Chinese"
     }, 
     {
-        id: 7, 
-        name: "Eastern European"
+        label: "Eastern European",
+        value: "Eastern European" 
     }, 
     {
-        id: 8, 
-        name: "European"
+        label: "European", 
+        value: "European"
     }, 
     {
-        id: 9, 
-        name: "French"
+        label: "French", 
+        value: "French"
     }, 
     {
-        id: 10, 
-        name: "German"
+        label: "German", 
+        value: "German"
     }, 
     {
-        id: 11, 
-        name: "Greek"
+        label: "Greek",
+        value: "Greek" 
     }, 
     {
-        id: 12, 
-        name: "Indian"
+        label: "Indian",
+        value: "Indian" 
     }, 
     {
-        id: 13, 
-        name: "Irish"
+        label: "Irish", 
+        value: "Irish"
     }, 
     {
-        id: 14, 
-        name: "Italian"
+        label: "Italian", 
+        value: "Italian" 
     }, 
     {
-        id: 15, 
-        name: "Japanese"
+        label: "Japanese", 
+        value: "Japanese"
     }, 
     {
-        id: 16, 
-        name: "Jewish"
+        label: "Jewish", 
+        value: "Jewish"
     }, 
     {
-        id: 17, 
-        name: "Korean"
+        label: "Korean", 
+        value: "Korean"
     }, 
     {
-        id: 18, 
-        name: "Latin American"
+        label: "Latin American", 
+        value: "Latin American"
     }, 
     {
-        id: 19, 
-        name: "Mediterranean"
+        label: "Mediterranean", 
+        value: "Mediterranean"
     }, 
     {
-        id: 20, 
-        name: "Mexican", 
+        label: "Mexican", 
+        value: "Mexican"
     }, 
     {
-        id: 21, 
-        name: "Middle Eastern"
+        label: "Middle Eastern", 
+        value: "Middle Eastern"
+    }, 
+    { 
+        label: "Nordic", 
+        value: "Nordic"
     }, 
     {
-        id: 22, 
-        name: "Nordic"
+        label: "Southern", 
+        value: "Southern"
     }, 
     {
-        id: 23, 
-        name: "Southern"
+        label: "Spanish", 
+        value: "Spanish"
     }, 
     {
-        id: 24, 
-        name: "Spanish"
+        label: "Thai", 
+        value: "Thai"
     }, 
     {
-        id: 24, 
-        name: "Thai"
-    }, 
-    {
-        id: 25, 
-        name: "Vietnamese"
+        label: "Vietnamese", 
+        value: "Vietnamese"
     }
 ]
