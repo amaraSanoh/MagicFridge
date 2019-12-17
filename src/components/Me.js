@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: '#fff', 
-    backgroundColor: 'orange', 
+    backgroundColor: '#ff9b42', 
     marginBottom: 30
   }, 
   btnTouchableText: {
