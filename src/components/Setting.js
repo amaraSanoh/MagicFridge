@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
 
     }, 
     textConfStyle: {
-        color: 'orange', 
+        color: '#ff9b42', 
         fontWeight: 'bold', 
         marginBottom: 8, 
         paddingLeft: 8
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         borderWidth: 1,
         borderColor: '#fff', 
-        backgroundColor: 'orange', 
+        backgroundColor: '#ff9b42', 
         marginBottom: 30
     },
     btnImage: {
