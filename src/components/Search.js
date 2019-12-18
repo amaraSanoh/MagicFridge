@@ -75,10 +75,22 @@ const Search = () => {
     );
   }
 
+  const whatCanICookToday = () => {
+    return (
+      <View>
+          <Text  style={{alignSelf: 'center'}}>OR</Text>
+          <TouchableOpacity style={styles.btnWhoCanICookToday} onPress={() => alert('appelle de la fonction qui hydrate la variable du hook des cuisines possibles avec le contenu du frigo')} >
+            <Text style={{color: 'white'}}>What can i cook today ?</Text>
+          </TouchableOpacity>
+      </View>
+    ); 
+  }
+
   return (
     <View style={styles.container}>
       {generateSearchBar()}
       {selectsDietAndCuisine(DietData, CuisineData)}
+      {whatCanICookToday()}
     </View>
   );
 }
@@ -113,6 +125,14 @@ const styles = StyleSheet.create({
     marginLeft: 15, 
     justifyContent: 'center', 
     alignItems: 'center'
+  }, 
+  btnWhoCanICookToday: {
+    backgroundColor: '#ff9b42',  
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    padding: 5, 
+    borderRadius: 7
+
   }, 
   btnImage: {
     backgroundColor: 'white', 
