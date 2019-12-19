@@ -6,7 +6,7 @@ import {DietData} from '../../data/DietData';
 import {CuisineData} from '../../data/CuisineData';
 
 
-const Search = () => {
+const Search = ({navigation}) => {
   const [diet, setDiet] = useState("");
   const [cuisine, setCuisine] = useState("");
 
@@ -86,6 +86,11 @@ const Search = () => {
     ); 
   }
 
+  _navigateToRecipe = (recipe) => {
+    //navigation.navigate("Recipe", {recipe});
+  }
+
+  
   return (
     <View style={styles.container}>
       {generateSearchBar()}
@@ -94,6 +99,10 @@ const Search = () => {
     </View>
   );
 }
+
+Search.navigationOptions = {
+  title: 'Search'
+};
 
 export default Search; 
 
