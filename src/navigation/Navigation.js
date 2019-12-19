@@ -9,10 +9,19 @@ import Search from '../components/Search';
 import Me from '../components/Me';
 import Setting from '../components/Setting';
 
+const SearchNavigation = createStackNavigator(
+  {
+  Search: Search
+  },
+  {
+    initialRouteName: 'Search'
+  }
+);
+
 const TabNavigation = createBottomTabNavigator(
     {
       Search: {
-        screen: Search,
+        screen: SearchNavigation,
         navigationOptions: {
           title: 'Search',
           headerTitle: 'Search',
