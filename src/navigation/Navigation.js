@@ -51,8 +51,8 @@ const TabNavigation = createBottomTabNavigator(
     }, 
     {
       tabBarOptions: {
-        activeBackgroundColor: 'orange',
-        activeTintColor: 'white',
+        activeBackgroundColor: 'white',
+        activeTintColor: 'orange'
       },
       initialRouteName: 'Me',
     }
@@ -64,6 +64,6 @@ const TabNavigation = createBottomTabNavigator(
     tabIcon: {
       width: 20,
       height: 20,
-      backgroundColor: 'white'
+      backgroundColor: '#818182'
     },
   });
