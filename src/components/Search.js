@@ -5,10 +5,12 @@ import RNPickerSelect from 'react-native-picker-select';
 import {DietData} from '../../data/DietData';
 import {CuisineData} from '../../data/CuisineData';
 import {getRecipesByRecipeNameCuisineDiet} from '../api/Spoonacular';
+import ListRecipe from './ListRecipe'; 
 
 
 const Search = ({navigation}) => {
   const [recipes, setRecipes] = useState([]);  
+  const [isRefreshing, setRefreshingState] = useState( false );
   const [errorDataLoading, setErrorDataLoading] = useState(false);
   const paginationData = useRef( {currentOffset: 0, currentNumber: 10, currentMaxResults: 0} ); 
   const searchData = useRef( {currentRecipeName: ' ', currentDiet: ' ', currentCuisine: ' '} ); 
@@ -63,10 +65,13 @@ const Search = ({navigation}) => {
   
 
   const _loadRecipes = async (prevRecipes) => {
+    setRefreshingState(true); 
     try 
     {
       var spoonacularSearchResult = ( await getRecipesByRecipeNameCuisineDiet( _getRecipeName(), _getCuisine(), _getDiet(), _getOffset(), _getNumber() ) );
       let decalage = _getOffset() + spoonacularSearchResult.number; 
+      console.log(decalage); 
+      console.log(spoonacularSearchResult.totalResults); 
       _setOffset(decalage); 
       _setMaxResults(spoonacularSearchResult.totalResults); 
       setRecipes( [...prevRecipes, ...spoonacularSearchResult.results] ); 
@@ -80,6 +85,10 @@ const Search = ({navigation}) => {
       _setMaxResults(0);
       setRecipes([]);
       setErrorDataLoading(true);
+    }
+    finally
+    {
+      setRefreshingState(false); 
     }
   }
 
@@ -168,8 +177,20 @@ const Search = ({navigation}) => {
     ); 
   }
 
-  _navigateToRecipe = (recipes) => {
-    //navigation.navigate("Recipe", {recipe});
+  const generateListRecipe = () => {
+    return(
+      <ListRecipe 
+        recettes={recipes}
+        refreshTop={ () => _searchRecipes() } 
+        refreshing={isRefreshing} 
+        moreRecipes={ () => _loadMoreRecipes() }
+        navigateToRecipeDetails={ _navigateToRecipe }
+      />
+    ); 
+  }
+
+  _navigateToRecipe = (recipe) => {
+    // navigation.navigate("Recipe", {recipe});
   }
 
   
@@ -178,6 +199,7 @@ const Search = ({navigation}) => {
       {generateSearchBar()}
       {selectsDietAndCuisine(DietData, CuisineData)}
       {whatCanICookToday()}
+      {generateListRecipe()}
     </View>
   );
 }
@@ -222,8 +244,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center', 
     alignItems: 'center', 
     padding: 5, 
-    borderRadius: 7
-
+    borderRadius: 7, 
+    marginBottom: 10
   }, 
   btnImage: {
     backgroundColor: 'white', 
