@@ -31,8 +31,8 @@ export default Recipe;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    margin: 15
+    backgroundColor: '#fff', 
+    marginBottom: 20
   },
   recipeImage: {
     height: 130,

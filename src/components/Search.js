@@ -10,7 +10,7 @@ import ListRecipe from './ListRecipe';
 
 const Search = ({navigation}) => {
   const [recipes, setRecipes] = useState([]);  
-  const [isRefreshing, setRefreshingState] = useState( false );
+  const [isRefreshing, setRefreshingState] = useState( false ); //pour savoir si une recharge de recettes est en cours
   const [errorDataLoading, setErrorDataLoading] = useState(false);
   const paginationData = useRef( {currentOffset: 0, currentNumber: 10, currentMaxResults: 0} ); 
   const searchData = useRef( {currentRecipeName: ' ', currentDiet: ' ', currentCuisine: ' '} ); 
@@ -179,10 +179,10 @@ const Search = ({navigation}) => {
 
   const generateListRecipe = () => {
     return(
-      <ListRecipe 
+        <ListRecipe 
         recettes={recipes}
         refreshTop={ () => _searchRecipes() } 
-        refreshing={isRefreshing} 
+        refreshing={isRefreshing} //une recharge de recette est en cours
         moreRecipes={ () => _loadMoreRecipes() }
         navigateToRecipeDetails={ _navigateToRecipe }
       />
