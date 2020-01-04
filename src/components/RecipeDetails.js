@@ -3,9 +3,9 @@ import { StyleSheet, Text, View, Button, Image } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { _getRecipeImgUri, _getRecipeImgUriById } from '../helpers/Helpers';
 
-
-const Recipe = ({recipeItem, onClickOnMe}) => {
+const RecipeDetails = ({recipeItem, onClickOnMe}) => {
   
+
   return (
     <View style={styles.container}>
         <Image style={styles.recipeImage} source={{ uri: _getRecipeImgUri(recipeItem.image) }} />
@@ -13,42 +13,36 @@ const Recipe = ({recipeItem, onClickOnMe}) => {
             <Text style={styles.recipeName} numberOfLines = { 1 }>{recipeItem.title}</Text>
             <Image style={styles.addMyRecipe} source={{ uri: 'image' }} />
         </View>
-        <View style={styles.horizonalBar} />
     </View>
   );
 }
 
-export default Recipe; 
+export default RecipeDetails; 
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff', 
-    marginBottom: 20
-  },
-  recipeImage: {
-    height: 130,
-    backgroundColor: 'orange'
-  }, 
-  recipeName: {
-    fontWeight: 'bold',
-    paddingTop: 5, 
-    flex: 7
-  }, 
-  addMyRecipe:{
-    height: 30,
-    width: 30,
-    backgroundColor: 'orange', 
-    flex:1
-  }, 
-  horizonalBar: {
-    borderBottomColor: 'orange', 
-    borderBottomWidth: 2, 
-    marginTop: 5
-  }, 
-  blocText:{
-    flexDirection: 'row', 
-    marginTop: 5 , 
-    justifyContent: 'space-between'
-  }
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        margin: 15, 
+    }, 
+    recipeImage: {
+        height: 130,
+        backgroundColor: 'orange'
+    },
+    blocText:{
+        flexDirection: 'row', 
+        marginTop: 5 , 
+        justifyContent: 'space-between'
+    },
+    recipeName: {
+        fontWeight: 'bold',
+        paddingTop: 5, 
+        flex: 7
+    }, 
+    addMyRecipe:{
+        height: 30,
+        width: 30,
+        backgroundColor: 'orange', 
+        flex:1
+    }
 });
