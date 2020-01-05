@@ -1,42 +1,42 @@
 export const DietData = [
     {
-        label: "Gluten Free", 
-        value: "Gluten Free"
+        label: "gluten free", 
+        value: "gluten free"
     },
     {
-        label: "Ketogenic", 
-        value: "Ketogenic"
+        label: "ketogenic", 
+        value: "ketogenic"
     },
     {
-        label: "Vegetarian",
-        value: "Vegetarian"
+        label: "vegetarian",
+        value: "vegetarian"
     }, 
     {
-        label: "Lacto-Vegetarian", 
-        value: "Lacto-Vegetarian"
+        label: "lacto-vegetarian", 
+        value: "lacto-vegetarian"
     }, 
     {
-        label: "Ovo-Vegetarian", 
-        value: "Lacto-Vegetarian"
+        label: "ovo-vegetarian", 
+        value: "Lacto-vegetarian"
     }, 
     {
-        label: "Vegan", 
-        value: "Vegan"
+        label: "vegan", 
+        value: "vegan"
     }, 
     {
-        label: "Pescetarian", 
-        value: "Pescetarian"
+        label: "pescetarian", 
+        value: "pescetarian"
     }, 
     { 
-        label: "Paleo", 
-        value: "Paleo"
+        label: "paleo", 
+        value: "paleo"
     }, 
     {
-        label: "Primal", 
-        value: "Primal"
+        label: "primal", 
+        value: "primal"
     }, 
     { 
-        label: "Whole30", 
-        value: "Whole30"
+        label: "whole30", 
+        value: "whole30"
     }
   ]

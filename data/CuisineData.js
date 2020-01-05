@@ -1,106 +1,106 @@
 export const CuisineData = [
     {
-        label: "African",
-        value: "African" 
+        label: "african",
+        value: "african" 
     }, 
     {
-        label: "American", 
-        value: "American"
+        label: "american", 
+        value: "american"
     }, 
     {
-        label: "British", 
-        value: "British" 
+        label: "british", 
+        value: "british" 
     }, 
     {
-        label: "Cajun", 
-        value: "Cajun"
+        label: "cajun", 
+        value: "cajun"
     }, 
     {
-        label: "Caribbean", 
-        value: "Caribbean"
+        label: "caribbean", 
+        value: "caribbean"
     }, 
     {
-        label: "Chinese", 
-        value: "Chinese"
+        label: "chinese", 
+        value: "chinese"
     }, 
     {
-        label: "Eastern European",
-        value: "Eastern European" 
+        label: "eastern european",
+        value: "eastern european" 
     }, 
     {
-        label: "European", 
-        value: "European"
+        label: "european", 
+        value: "european"
     }, 
     {
-        label: "French", 
-        value: "French"
+        label: "french", 
+        value: "french"
     }, 
     {
-        label: "German", 
-        value: "German"
+        label: "ferman", 
+        value: "ferman"
     }, 
     {
-        label: "Greek",
-        value: "Greek" 
+        label: "freek",
+        value: "freek" 
     }, 
     {
-        label: "Indian",
-        value: "Indian" 
+        label: "indian",
+        value: "indian" 
     }, 
     {
-        label: "Irish", 
-        value: "Irish"
+        label: "irish", 
+        value: "irish"
     }, 
     {
-        label: "Italian", 
-        value: "Italian" 
+        label: "italian", 
+        value: "italian" 
     }, 
     {
-        label: "Japanese", 
-        value: "Japanese"
+        label: "japanese", 
+        value: "japanese"
     }, 
     {
-        label: "Jewish", 
-        value: "Jewish"
+        label: "jewish", 
+        value: "jewish"
     }, 
     {
-        label: "Korean", 
-        value: "Korean"
+        label: "korean", 
+        value: "korean"
     }, 
     {
-        label: "Latin American", 
-        value: "Latin American"
+        label: "latin american", 
+        value: "latin american"
     }, 
     {
-        label: "Mediterranean", 
-        value: "Mediterranean"
+        label: "mediterranean", 
+        value: "mediterranean"
     }, 
     {
-        label: "Mexican", 
-        value: "Mexican"
+        label: "mexican", 
+        value: "mexican"
     }, 
     {
-        label: "Middle Eastern", 
-        value: "Middle Eastern"
+        label: "middle eastern", 
+        value: "middle eastern"
     }, 
     { 
-        label: "Nordic", 
-        value: "Nordic"
+        label: "nordic", 
+        value: "nordic"
     }, 
     {
-        label: "Southern", 
-        value: "Southern"
+        label: "southern", 
+        value: "southern"
     }, 
     {
-        label: "Spanish", 
-        value: "Spanish"
+        label: "spanish", 
+        value: "spanish"
     }, 
     {
-        label: "Thai", 
-        value: "Thai"
+        label: "thai", 
+        value: "thai"
     }, 
     {
-        label: "Vietnamese", 
-        value: "Vietnamese"
+        label: "vietnamese", 
+        value: "vietnamese"
     }
 ]

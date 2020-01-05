@@ -8,10 +8,12 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import Search from '../components/Search'; 
 import Me from '../components/Me';
 import Setting from '../components/Setting';
+import RecipeDetails from '../components/RecipeDetails'; 
 
 const SearchNavigation = createStackNavigator(
   {
-  Search: Search
+    Search: Search,
+    RecipeDetails: RecipeDetails
   },
   {
     initialRouteName: 'Search'
