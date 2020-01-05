@@ -5,16 +5,18 @@ import { _getRecipeImgUri, _getRecipeImgUriById } from '../helpers/Helpers';
 
 
 const Recipe = ({recipeItem, onClickOnMe}) => {
-  
+
   return (
-    <View style={styles.container}>
-        <Image style={styles.recipeImage} source={{ uri: _getRecipeImgUri(recipeItem.image) }} />
-        <View style={styles.blocText}>
-            <Text style={styles.recipeName} numberOfLines = { 1 }>{recipeItem.title}</Text>
-            <Image style={styles.addMyRecipe} source={{ uri: 'image' }} />
-        </View>
-        <View style={styles.horizonalBar} />
-    </View>
+    <TouchableOpacity onPress={ onClickOnMe }>
+      <View style={styles.container}>
+          <Image style={styles.recipeImage} source={{ uri: _getRecipeImgUri(recipeItem.image) }} />
+          <View style={styles.blocText}>
+              <Text style={styles.recipeName} numberOfLines = { 1 }>{recipeItem.title}</Text>
+              <Image style={styles.addMyRecipe} source={{ uri: 'image' }} />
+          </View>
+          <View style={styles.horizonalBar} />
+      </View>
+    </TouchableOpacity>
   );
 }
 

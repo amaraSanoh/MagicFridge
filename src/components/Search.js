@@ -70,13 +70,10 @@ const Search = ({navigation}) => {
     {
       var spoonacularSearchResult = ( await getRecipesByRecipeNameCuisineDiet( _getRecipeName(), _getCuisine(), _getDiet(), _getOffset(), _getNumber() ) );
       let decalage = _getOffset() + spoonacularSearchResult.number; 
-      console.log(decalage); 
-      console.log(spoonacularSearchResult.totalResults); 
       _setOffset(decalage); 
       _setMaxResults(spoonacularSearchResult.totalResults); 
       setRecipes( [...prevRecipes, ...spoonacularSearchResult.results] ); 
       setErrorDataLoading(false);
-      console.log(spoonacularSearchResult.results); 
     } 
     catch (error) 
     {
@@ -184,13 +181,13 @@ const Search = ({navigation}) => {
         refreshTop={ () => _searchRecipes() } 
         refreshing={isRefreshing} //une recharge de recette est en cours
         moreRecipes={ () => _loadMoreRecipes() }
-        navigateToRecipeDetails={ _navigateToRecipe }
+        navigateToRecipeDetails={ _navigateToRecipeDetails }
       />
     ); 
   }
 
-  _navigateToRecipe = (recipe) => {
-    // navigation.navigate("Recipe", {recipe});
+  const _navigateToRecipeDetails = (recipeId) => {
+    navigation.navigate("RecipeDetails", {recipeId});
   }
 
   
