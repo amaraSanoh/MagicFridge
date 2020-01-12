@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
+import { Icon } from 'react-native-elements'; 
 import { StyleSheet, Text, View, Button, Image, TextInput, Keyboard } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import RNPickerSelect from 'react-native-picker-select';
@@ -6,6 +7,7 @@ import {DietData} from '../../data/DietData';
 import {CuisineData} from '../../data/CuisineData';
 import {getRecipesByRecipeNameCuisineDiet} from '../api/Spoonacular';
 import ListRecipe from './ListRecipe'; 
+import { Colors } from '../../definitions/Colors';
 
 
 const Search = ({navigation}) => {
@@ -157,7 +159,12 @@ const Search = ({navigation}) => {
               onChangeText={ (text) => _setRecipeName(text) }
           />
           <TouchableOpacity style={styles.btnTouchable} onPress={() => _searchRecipes() } >
-              <Image style={styles.btnImage} source={{ uri: 'image' }} />
+            <Icon 
+                style={ styles.tabIcon }  
+                name='search' 
+                type='font-awesome'
+                color={ Colors.mainWhiteColor } 
+            />
           </TouchableOpacity>
       </View>
     );

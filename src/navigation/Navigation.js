@@ -4,6 +4,9 @@ import { StyleSheet, Image } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { Icon } from 'react-native-elements'; 
+import { Colors } from '../../definitions/Colors';
+import { MyIcons } from '../../definitions/MyIcons';
 
 import Search from '../components/Search'; 
 import Me from '../components/Me';
@@ -27,8 +30,14 @@ const TabNavigation = createBottomTabNavigator(
         navigationOptions: {
           title: 'Search',
           headerTitle: 'Search',
-          tabBarIcon: () => {
-            return <Image style={ styles.tabIcon } source={{ uri: 'image' }}/>
+          tabBarIcon: ({focused, tintColor }) => { 
+            return <Icon 
+                      focused={focused}
+                      style={ styles.tabIcon }  
+                      name={ MyIcons.mainSearchIcon }
+                      type='font-awesome' 
+                      color={tintColor} 
+                  />
           },
         },
       },
@@ -36,8 +45,14 @@ const TabNavigation = createBottomTabNavigator(
         screen: Me,
         navigationOptions: {
           title: 'Me',
-          tabBarIcon: () => {
-            return <Image style={ styles.tabIcon } source={{ uri: 'image' }}/>
+          tabBarIcon: ({focused, tintColor }) => { 
+            return <Icon 
+                      focused={focused}
+                      style={ styles.tabIcon }  
+                      name={ MyIcons.mainMeIcon }
+                      type='font-awesome' 
+                      color={tintColor} 
+                  />
           },
         },
       },
@@ -45,16 +60,23 @@ const TabNavigation = createBottomTabNavigator(
         screen: Setting,
         navigationOptions: {
           title: 'Setting',
-          tabBarIcon: () => {
-            return <Image style={ styles.tabIcon } source={{ uri: 'image' }}/>
+          tabBarIcon: ({focused, tintColor }) => { 
+            return <Icon 
+                      focused={focused}
+                      style={ MyIcons.mainSettingIcon }
+                      name='cog' 
+                      type='font-awesome' 
+                      color={tintColor} 
+                  />
           },
         },
       },
     }, 
     {
       tabBarOptions: {
-        activeBackgroundColor: 'white',
-        activeTintColor: 'orange'
+        activeBackgroundColor: Colors.mainWhiteColor,
+        activeTintColor: Colors.mainOrangeColor, 
+        inactiveTintColor: Colors.mainBlackColor
       },
       initialRouteName: 'Me',
     }
@@ -66,6 +88,6 @@ const TabNavigation = createBottomTabNavigator(
     tabIcon: {
       width: 20,
       height: 20,
-      backgroundColor: '#818182'
+      backgroundColor: Colors.mainBlackColor
     },
   });

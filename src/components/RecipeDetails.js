@@ -8,27 +8,6 @@ const RecipeDetails = ({navigation}) => {
     const [recipe, setRecipe] = useState([]);
     const [erreurRecipe, setErreurRecipe] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const cuisinesDietsData = useRef( {currentCuisines: ' ', currentDiets: ' '} ); 
-
-    const _getCuisines = () => {
-        return cuisinesDietsData.current.currentCuisines; 
-    }
-
-    const _addCuisine = (cuisine) => {
-        var cuisines = _getCuisines();
-        if(cuisines.length == 0) cuisinesDietsData.current.currentCuisines = cuisine; 
-        else cuisinesDietsData.current.currentCuisines += ', '+cuisine;
-    }
-
-    const _getDiets = () => {
-        return cuisinesDietsData.current.currentDiets; 
-    }
-
-    const _addDiet = (diet) => {
-        var diets = _getCuisines();
-        if(diets.length == 0) cuisinesDietsData.current.currentDiets = diet; 
-        else cuisinesDietsData.current.currentDiets += ', '+diet;
-    }
 
 
     useEffect(() => {
@@ -61,12 +40,69 @@ const RecipeDetails = ({navigation}) => {
     }
 
     const _cuisinesAndDietsBlock = (cuisines, diets) => {
-        cuisines.forEach(element => { _addCuisine(element); });
-        diets.forEach(element => { _addDiet(element); });
+  
+        var c = "";
+        for(var i=0, cl = cuisines.length; i< cl; i++)
+        {
+            if(i < cl - 1 && i > 0) c += ", "+cuisines[i];
+            else if(i == 0) c = cuisines[i];
+        }
+        if(c == "") c = "No cuisine has been selected";
+
+        var d = "";
+        for(var i=0, dl = diets.length; i< dl; i++)
+        {
+            if(i < dl - 1 && i > 0) d += ", "+diets[i];
+            else if(i == 0) d = diets[i];
+        }
+        if(d == "") d = "No diet has been selected";
+
         return (
-            <View>
-                <Text>{_getCuisines()} cuisine(s)</Text>
-                <Text>{_getDiets()} diet(s)</Text>
+            <View style={{marginTop: 25}}>
+                <View style={[{flexDirection: 'row'}]}>
+                    <Text style={styles.listDietOrCuisine} numberOfLines = { 1 }>{c}</Text>
+                    <Text style={styles.dietOrCuisineConst}>cuisine(s)</Text>
+                </View>
+                <View style={[{flexDirection: 'row'}]}>
+                    <Text style={styles.listDietOrCuisine} numberOfLines = { 1 }>{d}</Text>
+                    <Text style={styles.dietOrCuisineConst}>diet(s)</Text>
+                </View>
+            </View>
+            
+        ); 
+    }
+
+    const _cuisineTimeBlock = (recipe) => {
+        return (
+            <View style={{marginTop: 25}}>
+                <Text>Ready in {recipe.readyInMinutes} min, up to {recipe.servings} people</Text>
+            </View>
+        ); 
+    }
+
+    const _ingredientBlock = (recipe) => {
+        return (
+            <View style={{marginTop: 25}}>
+                <Text style={styles.ingredientTitle}>Ingredients</Text>
+                <View style={[{flexDirection: 'row', marginTop: 25}]}>
+                    <View style={[{flex: 1}]}>
+                        <Text>gfgsdfhgfdsgh</Text>
+                        <Text>gfgsdfhgfdsgh</Text>
+                        <Text>gfgsdfhgfdsgh</Text>
+                    </View>
+                    <View style={{flex: 1}}>
+                        <View style={[{flexDirection: 'row'}]}>
+                            <View style={[{flex: 1}]} />
+                            <View style={[styles.verticalBar]} />
+                        </View>
+                    </View>
+                    <View style={[{flex: 1}]}>
+                        <Text>gfgsdfhgfdsgh</Text>
+                        <Text>gfgsdfhgfdsgh</Text>
+                        <Text>gfgsdfhgfdsgh</Text>
+                        <Text>gfgsdfhgfdsgh</Text>
+                    </View>
+                </View>
             </View>
         ); 
     }
@@ -88,8 +124,10 @@ const RecipeDetails = ({navigation}) => {
             return (
                 <View>
                     <Image style={styles.recipeImage} source={{ uri: recipe.image }} />
-                    {_titleBlock()}
+                    { _titleBlock() }
                     { _cuisinesAndDietsBlock(recipe.cuisines, recipe.diets) }
+                    { _cuisineTimeBlock(recipe) }
+                    { _ingredientBlock(recipe) }
                 </View>
             );
         }
@@ -132,5 +170,24 @@ const styles = StyleSheet.create({
         height: 30,
         width: 30,
         backgroundColor: 'orange'
-    }
+    }, 
+    listDietOrCuisine:{
+        flex: 2, 
+        marginRight: 10
+    }, 
+    dietOrCuisineConst:{
+        flex: 1
+    }, 
+    ingredientTitle: {
+        fontWeight: 'bold',
+        fontSize: 14,
+        paddingTop: 5, 
+        marginRight: 22, 
+        maxWidth: 278
+    }, 
+    verticalBar: {
+        borderLeftColor: '#aeafa9', 
+        borderLeftWidth: 2, 
+        flex: 1
+    } 
 });
