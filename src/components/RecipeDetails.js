@@ -84,6 +84,25 @@ const RecipeDetails = ({navigation}) => {
         return (
             <View style={{marginTop: 25}}>
                 <Text style={styles.ingredientTitle}>Ingredients</Text>
+                <View style={[{flexDirection: 'row', marginTop: 25}]}>
+                    <View style={[{flex: 1}]}>
+                        <Text>gfgsdfhgfdsgh</Text>
+                        <Text>gfgsdfhgfdsgh</Text>
+                        <Text>gfgsdfhgfdsgh</Text>
+                    </View>
+                    <View style={{flex: 1}}>
+                        <View style={[{flexDirection: 'row'}]}>
+                            <View style={[{flex: 1}]} />
+                            <View style={[styles.verticalBar]} />
+                        </View>
+                    </View>
+                    <View style={[{flex: 1}]}>
+                        <Text>gfgsdfhgfdsgh</Text>
+                        <Text>gfgsdfhgfdsgh</Text>
+                        <Text>gfgsdfhgfdsgh</Text>
+                        <Text>gfgsdfhgfdsgh</Text>
+                    </View>
+                </View>
             </View>
         ); 
     }
@@ -166,4 +185,9 @@ const styles = StyleSheet.create({
         marginRight: 22, 
         maxWidth: 278
     }, 
+    verticalBar: {
+        borderLeftColor: '#aeafa9', 
+        borderLeftWidth: 2, 
+        flex: 1
+    } 
 });

@@ -1,6 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, Image, CheckBox } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Icon } from 'react-native-elements'; 
+import { Colors } from '../../definitions/Colors';
+import { MyIcons } from '../../definitions/MyIcons';
 
 const Setting = () => {
 
@@ -44,7 +47,14 @@ const Setting = () => {
       return (
         <View style={styles.btnDataClear}>
             <TouchableOpacity style={styles.btnTouchable} onPress={() => alert('Clear data')} >
-                <Image style={styles.btnImage} source={{ uri: 'image' }} />
+                <View style={styles.btnImageBlock}>
+                  <Icon 
+                      style={styles.btnImage}  
+                      name={MyIcons.mainClearIcon} 
+                      type='font-awesome'
+                      color={ Colors.mainWhiteColor } 
+                  />
+                </View>
                 <Text style={styles.btnTouchableText}>Clear data</Text>
             </TouchableOpacity>
         </View>
@@ -114,6 +124,13 @@ const styles = StyleSheet.create({
         backgroundColor: 'white', 
         marginLeft: 10
     },  
+    btnImageBlock: {
+        width: 40, 
+        height: 45, 
+        marginLeft: 10,
+        justifyContent: 'center', 
+        alignItems: 'center'
+      }, 
     btnTouchableText: {
         marginLeft: 30, 
         color: 'white', 
