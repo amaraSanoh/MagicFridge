@@ -1,14 +1,14 @@
 import React, {useState, useEffect, useRef} from 'react';
-import { StyleSheet, Text, View, Button, Image, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, Button, Image, ActivityIndicator, ScrollView, FlatList } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { _getRecipeImgUri, _getRecipeImgUriById } from '../helpers/Helpers';
+import { _getRecipeImgUri, _getRecipeImgUriById, _getIngredientImage100 } from '../helpers/Helpers';
 import { getRecipeDetailsById } from '../api/Spoonacular';
+import { Colors } from '../../definitions/Colors';
 
 const RecipeDetails = ({navigation}) => {
     const [recipe, setRecipe] = useState([]);
     const [erreurRecipe, setErreurRecipe] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-
 
     useEffect(() => {
         _loadRecipe(); 
@@ -60,12 +60,12 @@ const RecipeDetails = ({navigation}) => {
         return (
             <View style={{marginTop: 25}}>
                 <View style={[{flexDirection: 'row'}]}>
-                    <Text style={styles.listDietOrCuisine} numberOfLines = { 1 }>{c}</Text>
-                    <Text style={styles.dietOrCuisineConst}>cuisine(s)</Text>
+                    <Text style={[styles.listDietOrCuisine, styles.textColor]} numberOfLines = { 1 }>{c}</Text>
+                    <Text style={[styles.dietOrCuisineConst, styles.textColor]}>cuisine(s)</Text>
                 </View>
                 <View style={[{flexDirection: 'row'}]}>
-                    <Text style={styles.listDietOrCuisine} numberOfLines = { 1 }>{d}</Text>
-                    <Text style={styles.dietOrCuisineConst}>diet(s)</Text>
+                    <Text style={[styles.listDietOrCuisine, styles.textColor]} numberOfLines = { 1 }>{d}</Text>
+                    <Text style={[styles.dietOrCuisineConst, styles.textColor]}>diet(s)</Text>
                 </View>
             </View>
             
@@ -74,37 +74,130 @@ const RecipeDetails = ({navigation}) => {
 
     const _cuisineTimeBlock = (recipe) => {
         return (
-            <View style={{marginTop: 25}}>
-                <Text>Ready in {recipe.readyInMinutes} min, up to {recipe.servings} people</Text>
+            <View style={[{marginTop: 25}]}>
+                <Text style={styles.textColor}>Ready in {recipe.readyInMinutes} min, up to {recipe.servings} people</Text>
             </View>
         ); 
     }
 
-    const _ingredientBlock = (recipe) => {
+    const IngredientHelperView = (ingredient) => {
+        return (
+            <View style={[ {flexDirection: 'row', marginBottom: 10}]}>
+                <Image style={[styles.addMyRecipe, {marginRight: 5, alignSelf: 'center'}]} source={{ uri: _getIngredientImage100(ingredient.image) }} />
+                <Text style={[styles.textColor, {paddingRight: 40}]} numberOfLines = { 3 } > {ingredient.original} </Text>
+            </View>
+        ); 
+    }
+    const _ingredientBlockView = (inMyFridge, missing) => { 
         return (
             <View style={{marginTop: 25}}>
                 <Text style={styles.ingredientTitle}>Ingredients</Text>
                 <View style={[{flexDirection: 'row', marginTop: 25}]}>
-                    <View style={[{flex: 1}]}>
-                        <Text>gfgsdfhgfdsgh</Text>
-                        <Text>gfgsdfhgfdsgh</Text>
-                        <Text>gfgsdfhgfdsgh</Text>
-                    </View>
-                    <View style={{flex: 1}}>
-                        <View style={[{flexDirection: 'row'}]}>
-                            <View style={[{flex: 1}]} />
-                            <View style={[styles.verticalBar]} />
+                    <View style={[{flex: 6}]}>
+                        <Text style={[ styles.ingredientCategorie ]}>In my  fridge</Text>
+                        <View >
+                            {
+                                inMyFridge.map(
+                                    item => (
+                                        <View key={item.id}>
+                                            {IngredientHelperView(item)}
+                                        </View>
+                                    )
+                                )
+                            }     
                         </View>
                     </View>
-                    <View style={[{flex: 1}]}>
-                        <Text>gfgsdfhgfdsgh</Text>
-                        <Text>gfgsdfhgfdsgh</Text>
-                        <Text>gfgsdfhgfdsgh</Text>
-                        <Text>gfgsdfhgfdsgh</Text>
+                    <View style={[{flexDirection: 'row', flex: 1}]}>
+                        <View style={[{flex: 1}]} />
+                        <View style={[{flex: 1, borderLeftWidth: 1, borderLeftColor: Colors.mainGrayColor}]} />
+                    </View>
+                    <View style={[{flex: 6}]}>
+                        <Text style={[ styles.ingredientCategorie ]}>Missing</Text>
+                        <View>
+                            {
+                                missing.map(
+                                    item => (
+                                        <View key={item.id}>
+                                            {IngredientHelperView(item)}
+                                        </View>
+                                    )
+                                )
+                            }
+                        </View>
                     </View>
                 </View>
             </View>
         ); 
+    }
+
+    const _checker = (tab, item) => {
+        trouver = false;
+        taille = tab.length;
+        i = 0; 
+        while(i < taille && !trouver)
+        {
+            if (tab[i].id == item.id) trouver = true;
+            i++;
+        }
+        return trouver;
+    }
+
+
+    const _ingredientBlock = (extendedIngredients, myFridgecontent) => { 
+        myFridgecontent = [
+            // {
+            //     "aisle": "Milk, Eggs, Other Dairy",
+            //     "amount": 1,
+            //     "consitency": "solid",
+            //     "id": 1123,
+            //     "image": "egg.png",
+            //     "measures": {
+            //       "metric": {
+            //         "amount": 1,
+            //         "unitLong": "large",
+            //         "unitShort": "large",
+            //       },
+            //       "us": {
+            //         "amount": 1,
+            //         "unitLong": "large",
+            //         "unitShort": "large",
+            //       },
+            //     },
+            //     "meta": [],
+            //     "metaInformation": [],
+            //     "name": "egg",
+            //     "original": "1 large egg",
+            //     "originalName": "egg",
+            //     "originalString": "1 large egg",
+            //     "unit": "large",
+            // }
+        ]; 
+        inMyFridge = []; 
+        missing = []; 
+        extendedIngredients.forEach(ingredient => {
+            if(_isInMyFridge(ingredient, myFridgecontent))
+            {
+                trouver = _checker(inMyFridge, ingredient); 
+                if(!trouver) inMyFridge.push(ingredient);  
+            }
+            else 
+            {
+                trouver = _checker(missing, ingredient);
+                if(!trouver) missing.push(ingredient);
+            }
+        });
+
+        // console.log(missing);
+        return (  _ingredientBlockView(inMyFridge, missing)  ); 
+    }
+
+
+    const _isInMyFridge = (ingredient, inMyFridge) => {
+        var length = inMyFridge.length;
+        for(var i = 0; i < length; i++) {
+            if(inMyFridge[i].id == ingredient.id) return true;
+        }
+        return false;
     }
 
 
@@ -124,10 +217,12 @@ const RecipeDetails = ({navigation}) => {
             return (
                 <View>
                     <Image style={styles.recipeImage} source={{ uri: recipe.image }} />
-                    { _titleBlock() }
-                    { _cuisinesAndDietsBlock(recipe.cuisines, recipe.diets) }
-                    { _cuisineTimeBlock(recipe) }
-                    { _ingredientBlock(recipe) }
+                    <View style={styles.containerWithoutImg}>
+                        { _titleBlock() }
+                        { _cuisinesAndDietsBlock(recipe.cuisines, recipe.diets) }
+                        { _cuisineTimeBlock(recipe) }
+                        { _ingredientBlock(recipe.extendedIngredients, []) }
+                    </View>
                 </View>
             );
         }
@@ -136,10 +231,10 @@ const RecipeDetails = ({navigation}) => {
 
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             { _displayLoading() }
             { _displayRecipeDetails()}
-        </View>
+        </ScrollView>
     );
 }
 
@@ -147,12 +242,14 @@ export default RecipeDetails;
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 1
+    }, 
+    containerWithoutImg: {
         backgroundColor: '#fff',
         margin: 15, 
     }, 
     recipeImage: {
-        height: 130,
+        height: 200,
         backgroundColor: 'orange'
     },
     blocText:{
@@ -189,5 +286,14 @@ const styles = StyleSheet.create({
         borderLeftColor: '#aeafa9', 
         borderLeftWidth: 2, 
         flex: 1
-    } 
+    }, 
+    textColor : {
+        color: Colors.mainDetailsTextColor
+    }, 
+    ingredientCategorie: { 
+        color: Colors.mainOrangeColor, 
+        alignSelf: 'center', 
+        marginBottom: 15, 
+        fontStyle: 'italic'
+    }
 });
