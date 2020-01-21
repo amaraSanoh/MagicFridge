@@ -4,8 +4,11 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { _getRecipeImgUri, _getRecipeImgUriById, _getIngredientImage100 } from '../helpers/Helpers';
 import { getRecipeDetailsById } from '../api/Spoonacular';
 import { Colors } from '../../definitions/Colors';
+import { connect } from 'react-redux';
+import { MyIcons } from '../../definitions/MyIcons';
+import { Icon } from 'react-native-elements'; 
 
-const RecipeDetails = ({navigation}) => {
+const RecipeDetails = ({navigation, savedRecipes, dispatch}) => {
     const [recipe, setRecipe] = useState([]);
     const [erreurRecipe, setErreurRecipe] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -30,11 +33,11 @@ const RecipeDetails = ({navigation}) => {
     }
 
   
-    const _titleBlock = () => {
+    const _titleBlock = (recipe) => {
         return(
             <View style={styles.blocText}>
                 <Text style={styles.recipeName} numberOfLines = { 1 }>{recipe.title}</Text>
-                <Image style={styles.addMyRecipe} source={{ uri: 'image' }} />
+                { _saveRecipeHelper(recipe) }
             </View>
         ); 
     }
@@ -246,7 +249,7 @@ const RecipeDetails = ({navigation}) => {
                 <View>
                     <Image style={styles.recipeImage} source={{ uri: recipe.image }} />
                     <View style={styles.containerWithoutImg}>
-                        { _titleBlock() }
+                        { _titleBlock(recipe) }
                         { _cuisinesAndDietsBlock(recipe.cuisines, recipe.diets) }
                         { _cuisineTimeBlock(recipe) }
                         { _ingredientBlock(recipe.extendedIngredients, []) }
@@ -259,6 +262,43 @@ const RecipeDetails = ({navigation}) => {
         return null;
     }
 
+    _saveRecipe = async (recipe) => {
+        const action = { type: 'SAVE_RECIPE', value: recipe };
+        dispatch(action);
+    }
+
+    _unsaveRecipe = async (recipe) => {
+        const action = { type: 'UNSAVE_RECIPE', value: recipe };
+        dispatch(action);
+    }
+
+    //La fonction pour sauvegarder et supprimer
+    const _saveRecipeHelper = (recipe) => {
+        if( savedRecipes.findIndex(rec => rec.id === recipe.id) !== -1 ) {
+            //La recette est sauvegardée
+            return (
+                <TouchableOpacity onPress={ () => _unsaveRecipe(recipe) }>
+                    <Icon 
+                        style={styles.addMyRecipe}  
+                        name={MyIcons.mainFrigeIcon} 
+                        type='font-awesome'
+                        color={ Colors.mainOrangeColor } 
+                    />
+                </TouchableOpacity>
+            );  
+        }
+        //La n'est pas sauvegardée
+        return (
+            <TouchableOpacity onPress={ () => _saveRecipe(recipe) }>
+                <Icon 
+                    style={styles.addMyRecipe}  
+                    name={MyIcons.mainFrigeIcon} 
+                    type='font-awesome'
+                    color={ Colors.mainGrayColor } 
+                />       
+            </TouchableOpacity>
+        );
+    }
 
     return (
         <ScrollView style={styles.container}>
@@ -268,7 +308,16 @@ const RecipeDetails = ({navigation}) => {
     );
 }
 
-export default RecipeDetails; 
+
+
+const mapStateToProps = (state) => {
+    return {
+        savedRecipes: state.recipesObjects
+    }
+}
+  
+export default connect(mapStateToProps)(RecipeDetails);
+
 
 const styles = StyleSheet.create({
     container: {
