@@ -1,0 +1,125 @@
+Les instructions du projet - Frigo magique
+-------------------------------------------------
+Mobile project - M2GI - 2019-2020
+
+
+INFO GENERALE
+
+Le projet doit fonctionner sur tablette, mais vous pouvez optimiser la disposition de votre téléphone.
+Vous serez évalué sur:
+fonctionnalités mises en œuvre
+code
+conception de l'application
+Concernant le code: faites attention à la duplication de code, suivez les principes de React (architecture des composants), gérez les erreurs (appel API) ...
+
+Api utilisé: spoonaculaire
+Lien vers le prototype: ici
+Vous avez une fonction géniale que vous souhaitez implémenter dans le projet? N'hésitez pas! Ce sera considéré :)
+
+Groupe: jusqu'à 3 personnes
+Envoyez un email pendant la première semaine à n.fournier.edu@gmail.com avec la composition du groupe
+N'hésitez pas à m'envoyer un email si vous avez des questions.
+
+
+
+
+Libération - RENDU
+
+05/03/2020
+Envoyez un courrier électronique à n.fournier.edu@gmail.com avec le lien vers le référentiel git du projet. Cela devrait être public. Le repo doit également contenir le projet APK. 
+Il devrait fonctionner sur la tablette (je vais installer votre application sur celle-ci, mais comme je l’ai dit, vous pouvez optimiser la disposition de votre téléphone).
+
+07/03/2020
+Présentation de groupe. Vous ferez une démonstration sur le périphérique de votre choix (téléphone ou tablette). 
+Vous serez également interrogé sur le code, comment avez-vous implémenté les fonctionnalités ...
+
+
+
+
+EXIGENCES
+
+Pages utilisateur
+
+
+
+Réfrigérateur
+Cette page affiche les ingrédients de l'utilisateur.
+Il peut effectuer une recherche par nom dans la liste des ingrédients.
+Il peut trier les ingrédients par nom ou par couloir.
+
+Chaque ingrédient peut être ajouté à sa liste de courses. Si l'ingrédient est déjà dans la liste d'achats, cela est indiqué.
+Les ingrédients peuvent être retirés du réfrigérateur (aucune confirmation requise). 
+Selon la configuration, un ingrédient retiré peut être automatiquement ajouté à la liste d'achats (s'il ne l'est pas déjà).
+
+Pour ajouter un nouvel ingrédient au réfrigérateur, l'utilisateur est redirigé vers une autre page.
+À partir de là, il peut commencer à remplir le nom de l’ingrédient pour afficher les résultats dans une liste 
+(s’il tape déjà quelque chose dans la page précédente, l’entrée est préfixée). Les ingrédients provenaient d'un appel API.
+Les ingrédients déjà dans le réfrigérateur sont indiqués; sinon, il est possible de les ajouter dans.
+
+
+Liste des courses
+
+Cette page affiche la liste de courses de l'utilisateur.
+Il peut effectuer une recherche par nom dans la liste des ingrédients.
+Il peut trier les ingrédients par nom ou par couloir.
+Chaque ingrédient peut être ajouté au réfrigérateur. Selon la configuration, l'ajout d'un ingrédient au réfrigérateur peut également le supprimer de la liste d'achats. 
+Si l’ingrédient est déjà dans le réfrigérateur de l’utilisateur, cela est indiqué.
+Les ingrédients peuvent être retirés de la liste d'achats (aucune confirmation requise).
+
+Pour ajouter un nouvel ingrédient à la liste d'achats, l'utilisateur est redirigé vers une autre page.
+À partir de là, il peut commencer à remplir le nom de l’ingrédient pour afficher les résultats dans une liste (s’il tape déjà quelque chose dans la page précédente, l’entrée est préfixée). Les ingrédients provenaient d'un appel API.
+
+
+Recettes sauvegardées
+Cette page affiche les recettes enregistrées par l’utilisateur.
+Il peut accéder à une recette en cliquant dessus.
+
+
+Configuration
+Cette page est utilisée pour l'API de configuration / surveillance d'application.
+Les crédits d'API restants sont affichés. Il est également indiqué quand ces données ont été mises à jour pour la dernière fois.
+2 configurations sont disponibles: ajoutez les ingrédients retirés du réfrigérateur à la liste de courses / supprimez les ingrédients de la liste de courses lors de l'ajout au réfrigérateur. Désactiver par défaut. Voir les pièces du réfrigérateur / de la liste de courses pour plus de détails.
+Par défaut, toutes les données sont conservées dans l'application (même lorsque l'application est fermée). 
+Un bouton est disponible pour nettoyer toutes ces données (confirmation requise).
+
+
+
+
+
+RECETTES
+Chercher
+Cette page est utilisée pour rechercher des recettes.
+L'utilisateur peut effectuer une recherche de deux manières: en recherchant des recettes avec les ingrédients de son réfrigérateur ou en effectuant une recherche par nom.
+
+Lors de la recherche par nom, l'utilisateur peut également spécifier un régime et / ou un type de cuisine. Les résultats sont affichés dans une liste. 
+En cliquant sur une recette, il naviguera vers les détails.
+
+Lors de la recherche de recettes contenant les ingrédients du réfrigérateur de l’utilisateur, aucune autre donnée ne peut être fournie (ni nom, ni régime / cuisine); 
+La recherche videra ces champs. 10 recettes sont présentées à partir de cette demande. 
+En cliquant sur une recette, l'utilisateur accédera également aux détails de la recette.
+
+
+Détails
+Cette page est utilisée pour afficher les détails de la recette.
+L'utilisateur peut enregistrer / annuler une recette.
+Chaque recette doit contenir une image, un titre, une liste de régimes, une liste de cuisines et une heure à définir (en fonction du résultat de l’API pour la recette).
+Les ingrédients sont divisés en 2 (dans le réfrigérateur de l’utilisateur ou non).
+Les instructions sont détaillées par étapes.
+Si les vins sont conseillés, ils sont ajoutés après les instructions.
+
+
+
+
+
+
+NB Prof : 
+
+
+
+
+
+
+
+
+
+Les ingrédients déjà dans la liste d'achats sont indiqués; sinon, il est possible de les ajouter dans.
