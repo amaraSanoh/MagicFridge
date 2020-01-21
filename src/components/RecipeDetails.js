@@ -199,11 +199,35 @@ const RecipeDetails = ({navigation}) => {
     {
         return (
             <View style={[{flexDirection: 'row', marginBottom: 10}]}>
-                <Text style={[{flex:1, color: Colors.mainOrangeColor}]}> {step.number}. </Text>
-                <Text style={[{flex:12}, styles.textGrayStrong]}> {step.step} </Text>
+                <Text style={[{flex:1, color: Colors.mainOrangeColor}]}>{step.number}. </Text>
+                <Text style={[{flex:12}, styles.textGrayStrong]}>{step.step}</Text>
             </View>
         ); 
     }
+
+
+    const _winesBlock = (winePairing) => 
+    {
+        wines = winePairing.pairedWines;
+        winesString = ""; 
+        winesLength = wines.length; 
+        for(i=0; i < winesLength; i++){
+            if(i == winesLength - 1 && winesString.length > 0) winesString = winesString + " or " + wines[i]; 
+            else if(winesString.length > 0) winesString = winesString + ", " + wines[i];
+            else if(winesString.length == 0 ) winesString = wines[i]; 
+        }
+
+        pairingText = winePairing.pairingText;  
+
+        return (
+            <View style={{marginTop: 25}}>
+                <Text style={styles.ingredientTitle}>Un peu de vin monsieur ?</Text>
+                <Text style={[{marginTop: 8, fontWeight: 'bold'}, styles.textGrayStrong]}>{winesString}</Text>
+                <Text style={[{marginTop: 8}, styles.textGrayStrong]}>{pairingText}</Text>
+            </View>
+        ); 
+    }
+
 
     const _displayLoading = () => {
         if (isLoading && !erreurRecipe) 
@@ -227,6 +251,7 @@ const RecipeDetails = ({navigation}) => {
                         { _cuisineTimeBlock(recipe) }
                         { _ingredientBlock(recipe.extendedIngredients, []) }
                         { _instructionsBlock(recipe.analyzedInstructions[0]) }
+                        { _winesBlock(recipe.winePairing) }
                     </View>
                 </View>
             );
