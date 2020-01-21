@@ -80,7 +80,7 @@ const RecipeDetails = ({navigation}) => {
         ); 
     }
 
-    const IngredientHelperView = (ingredient) => {
+    const _ingredientHelperView = (ingredient) => {
         return (
             <View style={[ {flexDirection: 'row', marginBottom: 10}]}>
                 <Image style={[styles.addMyRecipe, {marginRight: 5, alignSelf: 'center'}]} source={{ uri: _getIngredientImage100(ingredient.image) }} />
@@ -88,6 +88,7 @@ const RecipeDetails = ({navigation}) => {
             </View>
         ); 
     }
+
     const _ingredientBlockView = (inMyFridge, missing) => { 
         return (
             <View style={{marginTop: 25}}>
@@ -100,7 +101,7 @@ const RecipeDetails = ({navigation}) => {
                                 inMyFridge.map(
                                     item => (
                                         <View key={item.id}>
-                                            {IngredientHelperView(item)}
+                                            {_ingredientHelperView(item)}
                                         </View>
                                     )
                                 )
@@ -118,7 +119,7 @@ const RecipeDetails = ({navigation}) => {
                                 missing.map(
                                     item => (
                                         <View key={item.id}>
-                                            {IngredientHelperView(item)}
+                                            {_ingredientHelperView(item)}
                                         </View>
                                     )
                                 )
@@ -144,34 +145,7 @@ const RecipeDetails = ({navigation}) => {
 
 
     const _ingredientBlock = (extendedIngredients, myFridgecontent) => { 
-        myFridgecontent = [
-            // {
-            //     "aisle": "Milk, Eggs, Other Dairy",
-            //     "amount": 1,
-            //     "consitency": "solid",
-            //     "id": 1123,
-            //     "image": "egg.png",
-            //     "measures": {
-            //       "metric": {
-            //         "amount": 1,
-            //         "unitLong": "large",
-            //         "unitShort": "large",
-            //       },
-            //       "us": {
-            //         "amount": 1,
-            //         "unitLong": "large",
-            //         "unitShort": "large",
-            //       },
-            //     },
-            //     "meta": [],
-            //     "metaInformation": [],
-            //     "name": "egg",
-            //     "original": "1 large egg",
-            //     "originalName": "egg",
-            //     "originalString": "1 large egg",
-            //     "unit": "large",
-            // }
-        ]; 
+        myFridgecontent = []; 
         inMyFridge = []; 
         missing = []; 
         extendedIngredients.forEach(ingredient => {
@@ -200,6 +174,36 @@ const RecipeDetails = ({navigation}) => {
         return false;
     }
 
+    const _instructionsBlock = (analyzedInstructions) => 
+    {
+        steps = analyzedInstructions.steps; 
+        return (
+            <View style={{marginTop: 25}}>
+                <Text style={styles.ingredientTitle}>Instructions</Text>
+                <View >
+                    {
+                        steps.map(
+                            item => (
+                                <View key={item.number}>
+                                    {_instructionsHelperView(item)}
+                                </View>
+                            )
+                        )
+                    }     
+                </View>
+            </View>
+        ); 
+    }
+
+    const _instructionsHelperView = (step) => 
+    {
+        return (
+            <View style={[{flexDirection: 'row', marginBottom: 10}]}>
+                <Text style={[{flex:1, color: Colors.mainOrangeColor}]}> {step.number}. </Text>
+                <Text style={[{flex:12}, styles.textGrayStrong]}> {step.step} </Text>
+            </View>
+        ); 
+    }
 
     const _displayLoading = () => {
         if (isLoading && !erreurRecipe) 
@@ -222,6 +226,7 @@ const RecipeDetails = ({navigation}) => {
                         { _cuisinesAndDietsBlock(recipe.cuisines, recipe.diets) }
                         { _cuisineTimeBlock(recipe) }
                         { _ingredientBlock(recipe.extendedIngredients, []) }
+                        { _instructionsBlock(recipe.analyzedInstructions[0]) }
                     </View>
                 </View>
             );
@@ -290,6 +295,9 @@ const styles = StyleSheet.create({
     textColor : {
         color: Colors.mainDetailsTextColor
     }, 
+    textGrayStrong : {
+        color: Colors.mainGrayStrongColor
+    },
     ingredientCategorie: { 
         color: Colors.mainOrangeColor, 
         alignSelf: 'center', 
