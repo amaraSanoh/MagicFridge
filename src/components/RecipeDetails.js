@@ -280,7 +280,7 @@ const RecipeDetails = ({navigation, savedRecipes, dispatch}) => {
                 <TouchableOpacity onPress={ () => _unsaveRecipe(recipe) }>
                     <Icon 
                         style={styles.addMyRecipe}  
-                        name={MyIcons.mainFrigeIcon} 
+                        name={MyIcons.mainRecipeIcon} 
                         type='font-awesome'
                         color={ Colors.mainOrangeColor } 
                     />
@@ -292,7 +292,7 @@ const RecipeDetails = ({navigation, savedRecipes, dispatch}) => {
             <TouchableOpacity onPress={ () => _saveRecipe(recipe) }>
                 <Icon 
                     style={styles.addMyRecipe}  
-                    name={MyIcons.mainFrigeIcon} 
+                    name={MyIcons.mainRecipeIcon} 
                     type='font-awesome'
                     color={ Colors.mainGrayColor } 
                 />       
@@ -309,6 +309,10 @@ const RecipeDetails = ({navigation, savedRecipes, dispatch}) => {
 }
 
 
+
+RecipeDetails.navigationOptions = {
+    title: 'Recipe'
+};
 
 const mapStateToProps = (state) => {
     return {

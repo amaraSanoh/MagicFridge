@@ -12,6 +12,7 @@ import Search from '../components/Search';
 import Me from '../components/Me';
 import Setting from '../components/Setting';
 import RecipeDetails from '../components/RecipeDetails'; 
+import MyRecipes from '../components/MyRecipes'; 
 
 const SearchNavigation = createStackNavigator(
   {
@@ -20,6 +21,17 @@ const SearchNavigation = createStackNavigator(
   },
   {
     initialRouteName: 'Search'
+  }
+);
+
+const MyRecipesNavigation = createStackNavigator(
+  {
+    Me: Me,
+    MyRecipes: MyRecipes,
+    RecipeDetails: RecipeDetails
+  },
+  {
+    initialRouteName: 'Me'
   }
 );
 
@@ -42,7 +54,7 @@ const TabNavigation = createBottomTabNavigator(
         },
       },
       Me: {
-        screen: Me,
+        screen: MyRecipesNavigation,
         navigationOptions: {
           title: 'Me',
           tabBarIcon: ({focused, tintColor }) => { 

@@ -12,7 +12,7 @@ function saveRecipes(state = initialState, action) {
     case 'UNSAVE_RECIPE':
             nextState = {
                 ...state,
-                recipesObjects: state.recipesObjects.filter(id => id !== action.value.id)
+                recipesObjects: state.recipesObjects.filter(rec => rec.id !== action.value.id)
             };
       return nextState || state
     default:

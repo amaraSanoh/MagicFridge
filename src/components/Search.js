@@ -8,9 +8,10 @@ import {CuisineData} from '../../data/CuisineData';
 import {getRecipesByRecipeNameCuisineDiet} from '../api/Spoonacular';
 import ListRecipe from './ListRecipe'; 
 import { Colors } from '../../definitions/Colors';
+import { connect } from 'react-redux';
 
 
-const Search = ({navigation}) => {
+const Search = ({navigation, savedRecipes}) => {
   const [recipes, setRecipes] = useState([]);  
   const [isRefreshing, setRefreshingState] = useState( false ); //pour savoir si une recharge de recettes est en cours
   const [errorDataLoading, setErrorDataLoading] = useState(false);
@@ -189,6 +190,7 @@ const Search = ({navigation}) => {
         refreshing={isRefreshing} //une recharge de recette est en cours
         moreRecipes={ () => _loadMoreRecipes() }
         navigateToRecipeDetails={ _navigateToRecipeDetails }
+        savedRecipes={savedRecipes} 
       />
     ); 
   }
@@ -208,11 +210,21 @@ const Search = ({navigation}) => {
   );
 }
 
+
+
+
+
 Search.navigationOptions = {
   title: 'Search'
 };
 
-export default Search; 
+const mapStateToProps = (state) => {
+  return {
+      savedRecipes: state.recipesObjects
+  }
+}
+
+export default connect(mapStateToProps)(Search); 
 
 const styles = StyleSheet.create({
   container: {
