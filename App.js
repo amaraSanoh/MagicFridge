@@ -5,10 +5,14 @@ import Setting from './src/components/Setting';
 import Search from './src/components/Search';
 import Recipe from './src/components/Recipe';
 import Navigation from './src/navigation/Navigation';
+import { Provider } from 'react-redux';
+import { Store } from './src/store/Config';
 
 export default function App() {
   return (
-    <Navigation/>
+    <Provider store={ Store }>
+        <Navigation/>
+    </Provider>
   );
 }
 

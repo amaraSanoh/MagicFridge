@@ -5,17 +5,27 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import RNPickerSelect from 'react-native-picker-select';
 import {DietData} from '../../data/DietData';
 import {CuisineData} from '../../data/CuisineData';
-import {getRecipesByRecipeNameCuisineDiet} from '../api/Spoonacular';
+import {getRecipesByRecipeNameCuisineDiet, getRecipesByIngredients} from '../api/Spoonacular';
 import ListRecipe from './ListRecipe'; 
 import { Colors } from '../../definitions/Colors';
+import { connect } from 'react-redux';
 
 
-const Search = ({navigation}) => {
+const Search = ({navigation, savedRecipes}) => {
   const [recipes, setRecipes] = useState([]);  
   const [isRefreshing, setRefreshingState] = useState( false ); //pour savoir si une recharge de recettes est en cours
   const [errorDataLoading, setErrorDataLoading] = useState(false);
   const paginationData = useRef( {currentOffset: 0, currentNumber: 10, currentMaxResults: 0} ); 
   const searchData = useRef( {currentRecipeName: ' ', currentDiet: ' ', currentCuisine: ' '} ); 
+  const standardOrCanICookData = useRef( {currentDecisionVariable: true } ); // true => standard 
+
+  const setStandardOrCanICook = (decision) => {
+    standardOrCanICookData.current.currentDecisionVariable = decision;
+  }
+
+  const getStandardOrCanICook = () => {
+    standardOrCanICookData.current.currentDecisionVariable;
+  }
 
   const _setRecipeName = (texte) => {
     searchData.current.currentRecipeName = texte;
@@ -67,6 +77,7 @@ const Search = ({navigation}) => {
   
 
   const _loadRecipes = async (prevRecipes) => {
+    setStandardOrCanICook(true); //false => standard search
     setRefreshingState(true); 
     try 
     {
@@ -100,6 +111,44 @@ const Search = ({navigation}) => {
   const _loadMoreRecipes = async () => {
     if(_getOffset() < _getMaxResults()) _loadRecipes(recipes);
   }
+
+  const _loadRecipesByIngredients = async (myFridgeIngredients) => {
+    setStandardOrCanICook(false); //false => can i cook
+    setRefreshingState(true); 
+    try 
+    {
+      var spoonacularSearchResult = ( await getRecipesByIngredients( myFridgeIngredients ) );
+      let decalage = _getOffset() + spoonacularSearchResult.number; 
+      setRecipes( spoonacularSearchResult ); 
+      setErrorDataLoading(false);
+    } 
+    catch (error) 
+    {
+      setRecipes([]);
+      setErrorDataLoading(true);
+    }
+    finally
+    {
+      _setOffset(0); 
+      _setMaxResults(0);
+      _setMaxResults(0);
+      _setRecipeName(''); 
+      _setDiet(''); 
+      _setCuisine('');
+      setRefreshingState(false); 
+    }
+  }
+
+  const _searchRecipesByIngredients = async (myFridgeIngredients) => {
+    _setOffset(0); 
+    _setMaxResults(0);
+    _setMaxResults(0);
+    _setRecipeName(''); 
+    _setDiet(''); 
+    _setCuisine('');
+    _loadRecipesByIngredients(myFridgeIngredients); 
+  }
+
 
   const pickerStyle = {
     inputIOS: {
@@ -171,10 +220,11 @@ const Search = ({navigation}) => {
   }
 
   const whatCanICookToday = () => {
+    let myFridgeIngredients = 'apples,+flour,+sugar'; 
     return (
       <View>
           <Text  style={{alignSelf: 'center'}}>OR</Text>
-          <TouchableOpacity style={styles.btnWhoCanICookToday} onPress={() => alert('appelle de la fonction qui hydrate la variable du hook des cuisines possibles avec le contenu du frigo')} >
+          <TouchableOpacity style={styles.btnWhoCanICookToday} onPress={() => _searchRecipesByIngredients(myFridgeIngredients)} >
             <Text style={{color: 'white'}}>What can i cook today ?</Text>
           </TouchableOpacity>
       </View>
@@ -185,10 +235,11 @@ const Search = ({navigation}) => {
     return(
         <ListRecipe 
         recettes={recipes}
-        refreshTop={ () => _searchRecipes() } 
+        refreshTop={ () => getStandardOrCanICook() ? _searchRecipes() : _searchRecipesByIngredients() } 
         refreshing={isRefreshing} //une recharge de recette est en cours
         moreRecipes={ () => _loadMoreRecipes() }
         navigateToRecipeDetails={ _navigateToRecipeDetails }
+        savedRecipes={savedRecipes} 
       />
     ); 
   }
@@ -208,11 +259,21 @@ const Search = ({navigation}) => {
   );
 }
 
+
+
+
+
 Search.navigationOptions = {
   title: 'Search'
 };
 
-export default Search; 
+const mapStateToProps = (state) => {
+  return {
+      savedRecipes: state.recipesObjects
+  }
+}
+
+export default connect(mapStateToProps)(Search); 
 
 const styles = StyleSheet.create({
   container: {

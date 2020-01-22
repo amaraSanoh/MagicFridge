@@ -4,8 +4,11 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { _getRecipeImgUri, _getRecipeImgUriById, _getIngredientImage100 } from '../helpers/Helpers';
 import { getRecipeDetailsById } from '../api/Spoonacular';
 import { Colors } from '../../definitions/Colors';
+import { connect } from 'react-redux';
+import { MyIcons } from '../../definitions/MyIcons';
+import { Icon } from 'react-native-elements'; 
 
-const RecipeDetails = ({navigation}) => {
+const RecipeDetails = ({navigation, savedRecipes, dispatch}) => {
     const [recipe, setRecipe] = useState([]);
     const [erreurRecipe, setErreurRecipe] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -30,11 +33,11 @@ const RecipeDetails = ({navigation}) => {
     }
 
   
-    const _titleBlock = () => {
+    const _titleBlock = (recipe) => {
         return(
             <View style={styles.blocText}>
                 <Text style={styles.recipeName} numberOfLines = { 1 }>{recipe.title}</Text>
-                <Image style={styles.addMyRecipe} source={{ uri: 'image' }} />
+                { _saveRecipeHelper(recipe) }
             </View>
         ); 
     }
@@ -176,34 +179,74 @@ const RecipeDetails = ({navigation}) => {
 
     const _instructionsBlock = (analyzedInstructions) => 
     {
-        steps = analyzedInstructions.steps; 
-        return (
-            <View style={{marginTop: 25}}>
-                <Text style={styles.ingredientTitle}>Instructions</Text>
-                <View >
-                    {
-                        steps.map(
-                            item => (
-                                <View key={item.number}>
-                                    {_instructionsHelperView(item)}
-                                </View>
+        if(typeof analyzedInstructions !== 'undefined')
+        {
+            steps = analyzedInstructions.steps; 
+            return (
+                <View style={{marginTop: 25}}>
+                    <Text style={styles.ingredientTitle}>Instructions</Text>
+                    <View >
+                        {
+                            steps.map(
+                                item => (
+                                    <View key={item.number}>
+                                        {_instructionsHelperView(item)}
+                                    </View>
+                                )
                             )
-                        )
-                    }     
+                        }     
+                    </View>
                 </View>
-            </View>
+            ); 
+        }
+
+        return (
+            <View style={{marginTop: 25}}></View>
         ); 
+    
     }
 
     const _instructionsHelperView = (step) => 
     {
         return (
             <View style={[{flexDirection: 'row', marginBottom: 10}]}>
-                <Text style={[{flex:1, color: Colors.mainOrangeColor}]}> {step.number}. </Text>
-                <Text style={[{flex:12}, styles.textGrayStrong]}> {step.step} </Text>
+                <Text style={[{flex:1, color: Colors.mainOrangeColor}]}>{step.number}. </Text>
+                <Text style={[{flex:12}, styles.textGrayStrong]}>{step.step}</Text>
             </View>
         ); 
     }
+
+
+    const _winesBlock = (winePairing) => 
+    {
+        wines = winePairing.pairedWines;
+        if(typeof wines !== 'undefined')
+        {
+            winesString = ""; 
+            winesLength = wines.length; 
+            for(i=0; i < winesLength; i++){
+                if(i == winesLength - 1 && winesString.length > 0) winesString = winesString + " or " + wines[i]; 
+                else if(winesString.length > 0) winesString = winesString + ", " + wines[i];
+                else if(winesString.length == 0 ) winesString = wines[i]; 
+            }
+    
+            pairingText = winePairing.pairingText;  
+    
+            return (
+                <View style={{marginTop: 25}}>
+                    <Text style={styles.ingredientTitle}>Un peu de vin monsieur ?</Text>
+                    <Text style={[{marginTop: 8, fontWeight: 'bold'}, styles.textGrayStrong]}>{winesString}</Text>
+                    <Text style={[{marginTop: 8}, styles.textGrayStrong]}>{pairingText}</Text>
+                </View>
+            ); 
+        }
+
+        return (
+            <View style={{marginTop: 25}}></View>
+        ); 
+       
+    }
+
 
     const _displayLoading = () => {
         if (isLoading && !erreurRecipe) 
@@ -222,11 +265,12 @@ const RecipeDetails = ({navigation}) => {
                 <View>
                     <Image style={styles.recipeImage} source={{ uri: recipe.image }} />
                     <View style={styles.containerWithoutImg}>
-                        { _titleBlock() }
+                        { _titleBlock(recipe) }
                         { _cuisinesAndDietsBlock(recipe.cuisines, recipe.diets) }
                         { _cuisineTimeBlock(recipe) }
                         { _ingredientBlock(recipe.extendedIngredients, []) }
                         { _instructionsBlock(recipe.analyzedInstructions[0]) }
+                        { _winesBlock(recipe.winePairing) }
                     </View>
                 </View>
             );
@@ -234,6 +278,43 @@ const RecipeDetails = ({navigation}) => {
         return null;
     }
 
+    _saveRecipe = async (recipe) => {
+        const action = { type: 'SAVE_RECIPE', value: recipe };
+        dispatch(action);
+    }
+
+    _unsaveRecipe = async (recipe) => {
+        const action = { type: 'UNSAVE_RECIPE', value: recipe };
+        dispatch(action);
+    }
+
+    //La fonction pour sauvegarder et supprimer
+    const _saveRecipeHelper = (recipe) => {
+        if( savedRecipes.findIndex(rec => rec.id === recipe.id) !== -1 ) {
+            //La recette est sauvegardée
+            return (
+                <TouchableOpacity onPress={ () => _unsaveRecipe(recipe) }>
+                    <Icon 
+                        style={styles.addMyRecipe}  
+                        name={MyIcons.mainRecipeIcon} 
+                        type='font-awesome'
+                        color={ Colors.mainOrangeColor } 
+                    />
+                </TouchableOpacity>
+            );  
+        }
+        //La n'est pas sauvegardée
+        return (
+            <TouchableOpacity onPress={ () => _saveRecipe(recipe) }>
+                <Icon 
+                    style={styles.addMyRecipe}  
+                    name={MyIcons.mainRecipeIcon} 
+                    type='font-awesome'
+                    color={ Colors.mainGrayColor } 
+                />       
+            </TouchableOpacity>
+        );
+    }
 
     return (
         <ScrollView style={styles.container}>
@@ -243,7 +324,20 @@ const RecipeDetails = ({navigation}) => {
     );
 }
 
-export default RecipeDetails; 
+
+
+RecipeDetails.navigationOptions = {
+    title: 'Recipe'
+};
+
+const mapStateToProps = (state) => {
+    return {
+        savedRecipes: state.recipesObjects
+    }
+}
+  
+export default connect(mapStateToProps)(RecipeDetails);
+
 
 const styles = StyleSheet.create({
     container: {

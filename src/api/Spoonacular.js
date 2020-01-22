@@ -9,6 +9,8 @@ const PATH_API_RECIPES = `https://api.spoonacular.com/recipes/search?apiKey=bbcb
 const PATH_API_RECIPE_DETAILS_START = `https://api.spoonacular.com/recipes/`;
 const PATH_API_RECIPE_DETAILS_END = `/information?apiKey=`+API_KEY+`&includeNutrition=true`;
 const RECIPE_ID = ' '; 
+const PATH_API_RECIPES_BY_INGREDIENTS = `https://api.spoonacular.com/recipes/findByIngredients?apiKey=bbcb691cf0c84258862750810dabb1be&ingredients=`; 
+const INGREDIENTS = 'apples,+flour,+sugar'; 
 
 
 export async function getRecipesByRecipeNameCuisineDiet( recipeName, cuisine, diet, start, number ) {
@@ -40,6 +42,24 @@ export async function getRecipeDetailsById( recipeId ) {
 
   } catch (error) {
     console.log('Error with function getRecipeDetailsById ' + error.message + recipeId);
+    throw error;
+  }
+
+}
+
+
+export async function getRecipesByIngredients( ingredients) {
+  try {
+    const url = PATH_API_RECIPES_BY_INGREDIENTS+`${ingredients || INGREDIENTS}&number=10`;  
+
+    const response = await fetch(url);
+    if (response.ok) {
+      return response.json();
+    }
+    throw new Error(response.status);
+
+  } catch (error) {
+    console.log('Error with function getRecipesByIngredients ' + error.message + ingredients); 
     throw error;
   }
 

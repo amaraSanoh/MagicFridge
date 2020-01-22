@@ -5,7 +5,12 @@ import { Icon } from 'react-native-elements';
 import { Colors } from '../../definitions/Colors';
 import { MyIcons } from '../../definitions/MyIcons';
 
-const Me = () => {
+const Me = ({navigation}) => {
+
+  const _navigateToMyRecipes = () => {
+    navigation.navigate("MyRecipes");
+  }
+
   return (
     <View style={styles.container}>
         <View style={{flex: 1}}></View>
@@ -32,7 +37,7 @@ const Me = () => {
                 </View>
                 <Text style={styles.btnTouchableText}>My list</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.btnTouchable} onPress={() => alert('My recipes')} >
+            <TouchableOpacity style={styles.btnTouchable} onPress={() => _navigateToMyRecipes() } >
                 <View style={styles.btnImageBlock}>
                   <Icon 
                       style={styles.btnImage}  
@@ -48,6 +53,13 @@ const Me = () => {
     </View>
   );
 }
+
+
+
+
+Me.navigationOptions = {
+  title: 'Me'
+};
 
 export default Me; 
 
