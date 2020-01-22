@@ -179,23 +179,31 @@ const RecipeDetails = ({navigation, savedRecipes, dispatch}) => {
 
     const _instructionsBlock = (analyzedInstructions) => 
     {
-        steps = analyzedInstructions.steps; 
-        return (
-            <View style={{marginTop: 25}}>
-                <Text style={styles.ingredientTitle}>Instructions</Text>
-                <View >
-                    {
-                        steps.map(
-                            item => (
-                                <View key={item.number}>
-                                    {_instructionsHelperView(item)}
-                                </View>
+        if(typeof analyzedInstructions !== 'undefined')
+        {
+            steps = analyzedInstructions.steps; 
+            return (
+                <View style={{marginTop: 25}}>
+                    <Text style={styles.ingredientTitle}>Instructions</Text>
+                    <View >
+                        {
+                            steps.map(
+                                item => (
+                                    <View key={item.number}>
+                                        {_instructionsHelperView(item)}
+                                    </View>
+                                )
                             )
-                        )
-                    }     
+                        }     
+                    </View>
                 </View>
-            </View>
+            ); 
+        }
+
+        return (
+            <View style={{marginTop: 25}}></View>
         ); 
+    
     }
 
     const _instructionsHelperView = (step) => 
@@ -212,23 +220,31 @@ const RecipeDetails = ({navigation, savedRecipes, dispatch}) => {
     const _winesBlock = (winePairing) => 
     {
         wines = winePairing.pairedWines;
-        winesString = ""; 
-        winesLength = wines.length; 
-        for(i=0; i < winesLength; i++){
-            if(i == winesLength - 1 && winesString.length > 0) winesString = winesString + " or " + wines[i]; 
-            else if(winesString.length > 0) winesString = winesString + ", " + wines[i];
-            else if(winesString.length == 0 ) winesString = wines[i]; 
+        if(typeof wines !== 'undefined')
+        {
+            winesString = ""; 
+            winesLength = wines.length; 
+            for(i=0; i < winesLength; i++){
+                if(i == winesLength - 1 && winesString.length > 0) winesString = winesString + " or " + wines[i]; 
+                else if(winesString.length > 0) winesString = winesString + ", " + wines[i];
+                else if(winesString.length == 0 ) winesString = wines[i]; 
+            }
+    
+            pairingText = winePairing.pairingText;  
+    
+            return (
+                <View style={{marginTop: 25}}>
+                    <Text style={styles.ingredientTitle}>Un peu de vin monsieur ?</Text>
+                    <Text style={[{marginTop: 8, fontWeight: 'bold'}, styles.textGrayStrong]}>{winesString}</Text>
+                    <Text style={[{marginTop: 8}, styles.textGrayStrong]}>{pairingText}</Text>
+                </View>
+            ); 
         }
 
-        pairingText = winePairing.pairingText;  
-
         return (
-            <View style={{marginTop: 25}}>
-                <Text style={styles.ingredientTitle}>Un peu de vin monsieur ?</Text>
-                <Text style={[{marginTop: 8, fontWeight: 'bold'}, styles.textGrayStrong]}>{winesString}</Text>
-                <Text style={[{marginTop: 8}, styles.textGrayStrong]}>{pairingText}</Text>
-            </View>
+            <View style={{marginTop: 25}}></View>
         ); 
+       
     }
 
 
