@@ -14,6 +14,7 @@ import Setting from '../components/Setting';
 import RecipeDetails from '../components/RecipeDetails'; 
 import MyRecipes from '../components/MyRecipes'; 
 import MyFridge from '../components/MyFridge'; 
+import AddToMyFridgeView from '../components/AddToMyFridgeView';
 
 const SearchNavigation = createStackNavigator(
   {
@@ -30,7 +31,8 @@ const MyRecipesNavigation = createStackNavigator(
     Me: Me,
     MyRecipes: MyRecipes,
     RecipeDetails: RecipeDetails,
-    MyFridge: MyFridge
+    MyFridge: MyFridge, 
+    AddToMyFridgeView: AddToMyFridgeView
   },
   {
     initialRouteName: 'Me'

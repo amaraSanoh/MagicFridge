@@ -10,7 +10,7 @@ import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-
 import SortIngredientBar from './SortIngredientBar';
 
 
-const MyFridge = ({navigation, myFridgeIngredients}) => {
+const AddToMyFridgeView = ({navigation}) => {
   const [ingredients, setIngredients] = useState([]);  
   const [sortString, setSortString] = useState('');
   const [isRefreshing, setRefreshingState] = useState( false ); //pour savoir si une recharge des ingredients est en cours
@@ -26,18 +26,6 @@ const MyFridge = ({navigation, myFridgeIngredients}) => {
     return sortByData.current.currentSortBy; 
   }
 
-  const addNewIngredient = (ingredientString) => {
-    return (
-      <View>
-          <TouchableOpacity style={styles.btnAddNewIngredient} onPress={() => _navigateToAddNewIngredient(ingredientString)} >
-            <View style={[{flexDirection: 'row'}]}>
-                <Text style={[{color: 'white', flex: 1}]}>+</Text>
-                <Text style={[{color: 'white', flex: 5, justifyContent: 'center'}]}>Add new ingredient</Text>
-            </View>
-          </TouchableOpacity>
-      </View>
-    ); 
-  }
 
 //   const generateListRecipe = () => {
 //     return(
@@ -52,19 +40,14 @@ const MyFridge = ({navigation, myFridgeIngredients}) => {
 //     ); 
 //   }
 
-  const _navigateToAddNewIngredient = (ingredientString) => {
-    navigation.navigate("AddToMyFridgeView", {ingredientString});
-  }
-
   
   return (
     <View style={styles.container}>
         <SortIngredientBar
             setSortStringHook={setSortString}
             setCurrentSortByRef={setCurrentSortBy}
-            defaultSortString = {sortString}
+            defaultSortString = {navigation.getParam("ingredientString")}
         />
-        {addNewIngredient(sortString)}
     </View>
   );
 }
@@ -73,39 +56,23 @@ const MyFridge = ({navigation, myFridgeIngredients}) => {
 
 
 
-MyFridge.navigationOptions = {
-  title: 'My fridge'
+AddToMyFridgeView.navigationOptions = {
+  title: 'Add to my fridge'
 };
 
 const mapStateToProps = (state) => {
   return {
     // state.myFridgeIngredientsObjects
-    myFridgeIngredients: []
+    IngredientsInMyFridge: []
   }
 }
 
-export default connect(mapStateToProps)(MyFridge); 
+export default connect(mapStateToProps)(AddToMyFridgeView); 
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
     margin: 15, 
-  },
-  sortView: {
-    marginBottom: 12, 
-  }, 
-  btnAddNewIngredient: {
-    backgroundColor: '#ff9b42',  
-    justifyContent: 'center', 
-    alignItems: 'center', 
-    padding: 5, 
-    borderRadius: 7, 
-    marginBottom: 10
-  }, 
-  btnImage: {
-    backgroundColor: 'white', 
-    width: 20, 
-    height: 20
   }
 });
