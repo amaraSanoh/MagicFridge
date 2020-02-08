@@ -7,24 +7,78 @@ import {getIngredientsAutoc} from '../api/SpoonacularIngredient';
 import { Colors } from '../../definitions/Colors';
 import { connect } from 'react-redux';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
-import SortIngredientBar from './SortIngredientBar';
+import {IngredientsData} from '../../data/IngredientsData';
+import ListIngredients from './ListIngredients';
 
 
-const MyFridge = ({navigation, myFridgeIngredients}) => {
+const MyFridge = ({navigation, ingredientsInMyFridge}) => {
   const [ingredients, setIngredients] = useState([]);  
   const [sortString, setSortString] = useState('');
   const [isRefreshing, setRefreshingState] = useState( false ); //pour savoir si une recharge des ingredients est en cours
   const [errorDataLoading, setErrorDataLoading] = useState(false);
-  const sortByData = useRef( {currentSortBy: 0} ); 
+  const sortByData = useRef( {currentSortBy: 0, currentSortByString: ''} ); 
 
   const setCurrentSortBy = (decision) => {
     sortByData.current.currentSortBy = decision;
-    console.log(sortByData.current.currentSortBy); 
   }
 
   const getCurrentSortBy = () => {
     return sortByData.current.currentSortBy; 
   }
+
+  const setCurrentSortByString = (text) => {
+    if(text == 'Backspace')
+    {
+      taille = sortByData.current.currentSortByString.length; 
+      sortByData.current.currentSortByString = sortByData.current.currentSortByString.substring(0, taille-1);
+    }else
+    {
+      sortByData.current.currentSortByString += text;
+    } 
+  }
+
+  const getCurrentSortByString = () => {
+    return sortByData.current.currentSortByString; 
+  }
+
+  const _refreshProcess = (event) => 
+  { 
+    if(event instanceof Object) setSortString(getCurrentSortByString()); 
+  }
+
+  const GenerateSortIngredientBar = () => 
+  {
+    const sortValues = [ {label: 'Name', value: 0}, {label: 'Aisle', value: 1} ]; 
+    
+    return (
+        <View style={ {marginBottom: 12} }>
+              <TextInput  
+                  placeholder="Ingredients' name" 
+                  style={{padding: 5, borderBottomColor: Colors.mainOrangeColor, borderBottomWidth: 2}} 
+                  onKeyPress={ (text) => setCurrentSortByString(text.nativeEvent.key) }
+                  onSubmitEditing={ (event) => _refreshProcess(event) }
+                  defaultValue={getCurrentSortByString()}
+              />
+              <View style={{marginTop:15}}>
+                  <RadioForm
+                      radio_props={sortValues}
+                      initial={0}
+                      formHorizontal={true}
+                      labelHorizontal={true}
+                      buttonColor={Colors.mainGrayColor}
+                      labelColor={Colors.mainGrayColor}
+                      selectedButtonColor={Colors.mainGrayStrongColor}
+                      animation={true}
+                      borderWidth={1}
+                      buttonSize={10}
+                      buttonOuterSize={20}
+                      onPress={(value) => setCurrentSortBy(value) }
+                  />
+              </View>
+        </View>
+    );
+  }
+
 
   const addNewIngredient = (ingredientString) => {
     return (
@@ -39,31 +93,58 @@ const MyFridge = ({navigation, myFridgeIngredients}) => {
     ); 
   }
 
-//   const generateListRecipe = () => {
-//     return(
-//         <ListRecipe 
-//         recettes={recipes}
-//         refreshTop={ () => getStandardOrCanICook() ? _searchRecipes() : _searchRecipesByIngredients() } 
-//         refreshing={isRefreshing} //une recharge de recette est en cours
-//         moreRecipes={ () => _loadMoreRecipes() }
-//         navigateToRecipeDetails={ _navigateToRecipeDetails }
-//         savedRecipes={savedRecipes} 
-//       />
-//     ); 
-//   }
+
+  const _loadIngredients = async () => {
+    setRefreshingState(true); 
+    // try 
+    // {
+    //   var spoonacularSearchResult = ( await getIngredientsAutoc( sortString ) );
+    //   setIngredients( spoonacularSearchResult ); 
+    //   setErrorDataLoading(false);
+    // } 
+    // catch (error) 
+    // {
+    //   setIngredients([]);
+    //   setErrorDataLoading(true);
+    // }
+    // finally
+    // {
+    //   setRefreshingState(false); 
+    // }
+
+    spoonacularSearchResult = IngredientsData; //A mettre en commentaire
+    setIngredients( spoonacularSearchResult ); 
+    setErrorDataLoading(false);
+    setRefreshingState(false); 
+  }
+
+  const _searchIngredients = async () => {
+      _loadIngredients(); 
+  }
+
+
+  const generateListIngredients = () => {
+    return(
+        <ListIngredients 
+          ingredients={ingredients}
+          refreshTop={ () => _searchIngredients() } 
+          refreshing={isRefreshing} //une recharge des ingredients est en cours
+          ingredientsInMyFridge={ingredientsInMyFridge} 
+          isFrigo={true}
+        />
+    ); 
+  }
 
   const _navigateToAddNewIngredient = (ingredientString) => {
     navigation.navigate("AddToMyFridgeView", {ingredientString});
   }
 
   
+
   return (
     <View style={styles.container}>
-        <SortIngredientBar
-            setSortStringHook={setSortString}
-            setCurrentSortByRef={setCurrentSortBy}
-            defaultSortString = {sortString}
-        />
+        <GenerateSortIngredientBar />
+        {generateListIngredients()}
         {addNewIngredient(sortString)}
     </View>
   );
@@ -80,7 +161,7 @@ MyFridge.navigationOptions = {
 const mapStateToProps = (state) => {
   return {
     // state.myFridgeIngredientsObjects
-    myFridgeIngredients: []
+    ingredientsInMyFridge: []
   }
 }
 
@@ -101,7 +182,7 @@ const styles = StyleSheet.create({
     alignItems: 'center', 
     padding: 5, 
     borderRadius: 7, 
-    marginBottom: 10
+    marginTop: 10
   }, 
   btnImage: {
     backgroundColor: 'white', 

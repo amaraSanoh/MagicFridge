@@ -5,19 +5,10 @@ import { _getRecipeImgUri, _getRecipeImgUriById } from '../helpers/Helpers';
 import { Colors } from '../../definitions/Colors';
 import { MyIcons } from '../../definitions/MyIcons';
 import { Icon } from 'react-native-elements'; 
+import {_getIngredientImage100} from '../helpers/IngredientHelpers';
 
 
-const Ingredient = ({isFrigo}) => {
-
-  const _imageContructor = (imageUrl) => {
-    if(imageUrl.substring(0, 5) == "https")
-    {
-      return imageUrl; 
-    }
-    return _getRecipeImgUri(imageUrl);
-  }
-
-  console.log(isFrigo);
+const Ingredient = ({isFrigo, ingredient}) => {
 
   const generateIcons = () => {
       if(isFrigo)
@@ -59,12 +50,18 @@ const Ingredient = ({isFrigo}) => {
       ); 
   }
 
+  const formatName = (name) => 
+  {
+    if(name != '') return name.charAt(0).toUpperCase() + name.substring(1).toLowerCase(); 
+    return '';
+  }
+
   return (
-      <View style={{marginLeft:15, marginRight:15, marginTop:15}}>
+      <View style={{marginTop:20}}>
         <View style={styles.container}>
-                <Image style={styles.ingredientImage} source={{ uri: 'image' }} />
-                <View style={{alignItems: 'center', justifyContent: 'center'}}>
-                    <Text style={styles.ingredientName} numberOfLines = { 1 }>Tomatoes</Text>
+                <Image style={styles.ingredientImage} source={{ uri: _getIngredientImage100(ingredient.image) }} />
+                <View style={{alignItems: 'center', justifyContent: 'center', marginLeft: 5, width: 160}}>
+                    <Text style={styles.ingredientName} numberOfLines = { 1 } ellipsizeMode='tail'>{formatName(ingredient.name)}</Text>
                 </View>
                 { generateIcons() }
         </View>
@@ -79,13 +76,12 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     backgroundColor: Colors.mainWhiteColor, 
-    marginBottom: 20,
-    marginTop: 50, 
+    marginBottom: 10,
     justifyContent: 'space-between'
   },
   ingredientImage: {
-    height: 90,
-    width: 110,
+    height: 50,
+    width: 60,
     backgroundColor: Colors.mainOrangeColor, 
   }, 
   ingredientName: {
