@@ -19,6 +19,11 @@ const AddToMyFridgeView = ({navigation, ingredientsInMyFridge}) => {
   const [errorDataLoading, setErrorDataLoading] = useState(false);
   const sortByData = useRef( {currentSortBy: 0, currentSortByString: ''} ); 
 
+  useEffect(() => {
+    _loadIngredients(); 
+  }, []); //le deuxième paramètre permet de ne pas appeler la fonction à chaque fois
+  
+
   const setCurrentSortBy = (decision) => {
     sortByData.current.currentSortBy = decision;
   }
@@ -32,7 +37,7 @@ const AddToMyFridgeView = ({navigation, ingredientsInMyFridge}) => {
     {
       taille = sortByData.current.currentSortByString.length; 
       sortByData.current.currentSortByString = sortByData.current.currentSortByString.substring(0, taille-1); 
-    }else
+    }else if(text.length == 1 || text.length == '1')
     {
       sortByData.current.currentSortByString += text;
     } 
@@ -91,7 +96,7 @@ const AddToMyFridgeView = ({navigation, ingredientsInMyFridge}) => {
   const GenerateSortIngredientBar = () => 
   {
     const sortValues = [ {label: 'Name', value: 0}, {label: 'Aisle', value: 1} ];   
-    if(sortString == '') setCurrentSortByString(navigation.getParam("ingredientString"));
+    if(sortString.length <= 0) setCurrentSortByString(navigation.getParam("ingredientString"));
     
     return (
         <View style={ {marginBottom: 12} }>
@@ -100,7 +105,7 @@ const AddToMyFridgeView = ({navigation, ingredientsInMyFridge}) => {
                   style={{padding: 5, borderBottomColor: Colors.mainOrangeColor, borderBottomWidth: 2}} 
                   onKeyPress={ (text) => setCurrentSortByString(text.nativeEvent.key) }
                   onSubmitEditing={ (event) => _refreshProcess(event) }
-                  defaultValue={getCurrentSortByString()}
+                  defaultValue={ (sortString.length <= 0 ) ? navigation.getParam("ingredientString") : getCurrentSortByString()}
               />
               <View style={{marginTop:15}}>
                   <RadioForm
