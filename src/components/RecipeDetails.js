@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import { StyleSheet, Text, View, Button, Image, ActivityIndicator, ScrollView, FlatList } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { _getRecipeImgUri, _getRecipeImgUriById, _getIngredientImage100 } from '../helpers/Helpers';
+import { _getIngredientImage100 } from '../helpers/IngredientHelpers';
 import { getRecipeDetailsById } from '../api/Spoonacular';
 import { Colors } from '../../definitions/Colors';
 import { connect } from 'react-redux';

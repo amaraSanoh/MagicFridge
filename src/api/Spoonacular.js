@@ -68,20 +68,3 @@ export async function getRecipesByIngredients( ingredients) {
 
 }
 
-export async function getIngredientsAutoc( ingredientAutoc ) {
-  try {
-    const url = PATH_API_INGREDIENTS_AUTOC+`${ingredientAutoc || INGREDIENT_AUTOC}`;  
-
-    const response = await fetch(url);
-    if (response.ok) {
-      return response.json();
-    }
-    throw new Error(response.status);
-
-  } catch (error) {
-    console.log('Error with function getIngredientsAutoc ' + error.message + ingredients); 
-    throw error;
-  }
-
-}
-
