@@ -20,7 +20,7 @@ const AddToMyFridgeView = ({navigation, ingredientsInMyFridge}) => {
   const sortByData = useRef( {currentSortBy: 0, currentSortByString: ''} ); 
 
   useEffect(() => {
-    _loadIngredients(); 
+    _searchIngredients(); 
   }, []); //le deuxième paramètre permet de ne pas appeler la fonction à chaque fois
   
 
@@ -49,12 +49,12 @@ const AddToMyFridgeView = ({navigation, ingredientsInMyFridge}) => {
 
   const _loadIngredients = async () => {
     setRefreshingState(true); 
-    
     try 
     {
       var spoonacularSearchResult = ( await getIngredientsAutoc( (sortString.length <= 0) ? navigation.getParam("ingredientString") : sortString) );
       setIngredients( spoonacularSearchResult ); 
       setErrorDataLoading(false);
+      console.log("call api"); 
     } 
     catch (error) 
     {
@@ -89,9 +89,12 @@ const AddToMyFridgeView = ({navigation, ingredientsInMyFridge}) => {
     ); 
   }
 
-  const _refreshProcess = (event) => 
+  const _refreshProcess = (evnmt) => 
   { 
-    if(event instanceof Object) setSortString(getCurrentSortByString()); 
+    if(evnmt instanceof Object) {
+      setSortString(getCurrentSortByString());
+      _searchIngredients(); 
+    }
   }
 
   const GenerateSortIngredientBar = () => 
@@ -105,7 +108,7 @@ const AddToMyFridgeView = ({navigation, ingredientsInMyFridge}) => {
                   placeholder="Ingredients' name" 
                   style={{padding: 5, borderBottomColor: Colors.mainOrangeColor, borderBottomWidth: 2}} 
                   onKeyPress={ (text) => setCurrentSortByString(text.nativeEvent.key) }
-                  onSubmitEditing={ (event) => _refreshProcess(event) }
+                  onSubmitEditing={ (evnmt) => _refreshProcess(evnmt) }
                   defaultValue={ (sortString.length <= 0 ) ? navigation.getParam("ingredientString") : getCurrentSortByString()}
               />
               <View style={{marginTop:15}}>
