@@ -15,22 +15,22 @@ const Ingredient = ({isFrigo, ingredient}) => {
       {
         return (
             <View style={styles.blocIcon}>
-                <View style={{marginLeft: 25}}>
+                <TouchableOpacity style={{marginLeft: 25}} onPress={() => alert('touché') } >
                     <Icon 
                         style={styles.iconStyle}  
                         name={MyIcons.mainListIcon} 
                         type='font-awesome'
                         color={ true ? Colors.mainOrangeColor : Colors.mainGrayColor } 
                     />
-                </View>
-                <View style={{marginLeft: 25}}>
+                </TouchableOpacity>
+                <TouchableOpacity style={{marginLeft: 25}} onPress={() => alert('touché') } >
                     <Icon 
                         style={styles.iconStyle}  
                         name={MyIcons.mainClearIcon} 
                         type='font-awesome'
                         color={ false ? Colors.mainOrangeColor : Colors.mainGrayColor } 
                     />
-                </View>
+                </TouchableOpacity>
             </View>    
         ); 
       }
@@ -38,14 +38,14 @@ const Ingredient = ({isFrigo, ingredient}) => {
 
       return (
         <View style={styles.blocIcon}>
-            <View style={{marginLeft: 25}}>
+            <TouchableOpacity style={{marginLeft: 25}} onPress={() => alert('touché') } >
                 <Icon 
                     style={styles.iconStyle}  
                     name={MyIcons.mainFrigeIcon} 
                     type='font-awesome'
                     color={ true ? Colors.mainOrangeColor : Colors.mainGrayColor } 
                 />
-            </View>
+            </TouchableOpacity>
         </View>
       ); 
   }
