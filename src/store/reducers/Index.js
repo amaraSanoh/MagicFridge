@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux'; 
 
 import AddToMyFridgeReducer from './AddToMyFridgeReducer';
-import RecipeReducers from './RecipeReducers';
+import RecipeReducer from './RecipeReducer';
 
-const combineMyReducers = combineReducers({
+const reducers = combineReducers({
     addToMyFridgeReducer: AddToMyFridgeReducer, 
-    recipeReducers: RecipeReducers
+    recipeReducer: RecipeReducer
 }); 
 
-export default combineMyReducers; 
+export default reducers; 

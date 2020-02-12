@@ -11,8 +11,7 @@ import {IngredientsData} from '../../data/IngredientsData';
 import ListIngredients from './ListIngredients';
 
 
-const MyFridge = ({navigation, ingredientsInMyFridge}) => {
-  const [ingredients, setIngredients] = useState([]);  
+const MyFridge = ({navigation, ingredientsInMyFridge}) => { 
   const [sortString, setSortString] = useState('');
   const [isRefreshing, setRefreshingState] = useState( false ); //pour savoir si une recharge des ingredients est en cours
   const [errorDataLoading, setErrorDataLoading] = useState(false);
@@ -94,39 +93,15 @@ const MyFridge = ({navigation, ingredientsInMyFridge}) => {
   }
 
 
-  const _loadIngredients = async () => {
-    setRefreshingState(true); 
-    // try 
-    // {
-    //   var spoonacularSearchResult = ( await getIngredientsAutoc( sortString ) );
-    //   setIngredients( spoonacularSearchResult ); 
-    //   setErrorDataLoading(false);
-    // } 
-    // catch (error) 
-    // {
-    //   setIngredients([]);
-    //   setErrorDataLoading(true);
-    // }
-    // finally
-    // {
-    //   setRefreshingState(false); 
-    // }
-
-    spoonacularSearchResult = IngredientsData; //A mettre en commentaire
-    setIngredients( spoonacularSearchResult ); 
-    setErrorDataLoading(false);
-    setRefreshingState(false); 
+  const _searchIngredients = () => 
+  {
+    return ingredientsInMyFridge; 
   }
-
-  const _searchIngredients = async () => {
-      _loadIngredients(); 
-  }
-
 
   const generateListIngredients = () => {
     return(
         <ListIngredients 
-          ingredients={ingredients}
+          ingredients={ingredientsInMyFridge}
           refreshTop={ () => _searchIngredients() } 
           refreshing={isRefreshing} //une recharge des ingredients est en cours
           ingredientsInMyFridge={ingredientsInMyFridge} 
@@ -160,8 +135,7 @@ MyFridge.navigationOptions = {
 
 const mapStateToProps = (state) => {
   return {
-    // state.myFridgeIngredientsObjects
-    ingredientsInMyFridge: []
+    ingredientsInMyFridge: state.addToMyFridgeReducer.ingredientsToMyFridgeObjects
   }
 }
 

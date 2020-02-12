@@ -149,9 +149,9 @@ AddToMyFridgeView.navigationOptions = {
 };
 
 const mapStateToProps = (state) => {
+  console.log(state); 
   return {
-    // state.myFridgeIngredientsObjects
-    ingredientsInMyFridge: []
+    ingredientsInMyFridge: state.addToMyFridgeReducer.ingredientsToMyFridgeObjects
   }
 }
 
