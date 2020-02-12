@@ -49,27 +49,27 @@ const AddToMyFridgeView = ({navigation, ingredientsInMyFridge}) => {
 
   const _loadIngredients = async () => {
     setRefreshingState(true); 
-    // try 
-    // {
-    //   var spoonacularSearchResult = ( await getIngredientsAutoc( (sortString.length <= 0) ? navigation.getParam("ingredientString") : getCurrentSortByString()) );
-    //   setIngredients( spoonacularSearchResult ); 
-    //   setErrorDataLoading(false);
-    //   console.log("call api"); 
-    // } 
-    // catch (error) 
-    // {
-    //   setIngredients([]);
-    //   setErrorDataLoading(true);
-    // }
-    // finally
-    // {
-    //   setRefreshingState(false); 
-    // }
+    try 
+    {
+      var spoonacularSearchResult = ( await getIngredientsAutoc( (sortString.length <= 0) ? navigation.getParam("ingredientString") : getCurrentSortByString()) );
+      setIngredients( spoonacularSearchResult ); 
+      setErrorDataLoading(false);
+      console.log("call api"); 
+    } 
+    catch (error) 
+    {
+      setIngredients([]);
+      setErrorDataLoading(true);
+    }
+    finally
+    {
+      setRefreshingState(false); 
+    }
 
-    spoonacularSearchResult = IngredientsData; //A mettre en commentaire
-    setIngredients( spoonacularSearchResult ); 
-    setErrorDataLoading(false);
-    setRefreshingState(false); 
+    // spoonacularSearchResult = IngredientsData; //A mettre en commentaire
+    // setIngredients( spoonacularSearchResult ); 
+    // setErrorDataLoading(false);
+    // setRefreshingState(false); 
   }
 
   const _searchIngredients = async () => {
