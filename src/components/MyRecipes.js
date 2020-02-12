@@ -39,7 +39,7 @@ MyRecipes.navigationOptions = {
 
 const mapStateToProps = (state) => {
     return {
-        savedRecipes: state.recipesObjects
+        savedRecipes: state.recipeReducer.recipesObjects
     }
 }
   

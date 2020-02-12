@@ -6,31 +6,39 @@ import { Colors } from '../../definitions/Colors';
 import { MyIcons } from '../../definitions/MyIcons';
 import { Icon } from 'react-native-elements'; 
 import {_getIngredientImage100} from '../helpers/IngredientHelpers';
+import { connect } from 'react-redux';
 
 
-const Ingredient = ({isFrigo, ingredient}) => {
+const Ingredient = ({isFrigo, ingredient, dispatch, ingredientsInMyFridge}) => {
 
-  const generateIcons = () => {
+  const isInMyFridge = (ingredient) => 
+  {
+    if(ingredientsInMyFridge.findIndex(ingred => ingred.id === ingredient.id) !== -1) return true; 
+    return false;
+  }
+
+
+  const generateIcons = (ingredient) => {
       if(isFrigo)
       {
         return (
             <View style={styles.blocIcon}>
-                <View style={{marginLeft: 25}}>
+                <TouchableOpacity style={{marginLeft: 25}} onPress={() => alert('touché') } >
                     <Icon 
                         style={styles.iconStyle}  
                         name={MyIcons.mainListIcon} 
                         type='font-awesome'
-                        color={ true ? Colors.mainOrangeColor : Colors.mainGrayColor } 
+                        color={ (isInMyFridge(ingredient)) ? Colors.mainOrangeColor : Colors.mainGrayColor } 
                     />
-                </View>
-                <View style={{marginLeft: 25}}>
+                </TouchableOpacity>
+                <TouchableOpacity style={{marginLeft: 25}} onPress={() => _unsaveIngredientInMyFridge(ingredient) } >
                     <Icon 
                         style={styles.iconStyle}  
                         name={MyIcons.mainClearIcon} 
                         type='font-awesome'
-                        color={ false ? Colors.mainOrangeColor : Colors.mainGrayColor } 
+                        color={ Colors.mainRedColor } 
                     />
-                </View>
+                </TouchableOpacity>
             </View>    
         ); 
       }
@@ -38,14 +46,14 @@ const Ingredient = ({isFrigo, ingredient}) => {
 
       return (
         <View style={styles.blocIcon}>
-            <View style={{marginLeft: 25}}>
+            <TouchableOpacity style={{marginLeft: 25}} onPress={() => (isInMyFridge(ingredient)) ? _unsaveIngredientInMyFridge(ingredient) : _saveIngredientInMyFridge(ingredient) } >
                 <Icon 
                     style={styles.iconStyle}  
                     name={MyIcons.mainFrigeIcon} 
                     type='font-awesome'
-                    color={ true ? Colors.mainOrangeColor : Colors.mainGrayColor } 
+                    color={ (isInMyFridge(ingredient)) ? Colors.mainOrangeColor : Colors.mainGrayColor } 
                 />
-            </View>
+            </TouchableOpacity>
         </View>
       ); 
   }
@@ -56,6 +64,17 @@ const Ingredient = ({isFrigo, ingredient}) => {
     return '';
   }
 
+  _saveIngredientInMyFridge  = async (ingredient) => {
+    const action = { type: 'ADD_INGREDIENT_TO_MY_FRIDGE', value: ingredient };
+    dispatch(action);
+  }
+
+  _unsaveIngredientInMyFridge = async (ingredient) => {
+    const action = { type: 'REMOVE_INGREDIENT_TO_MY_FRIDGE', value: ingredient };
+    dispatch(action);
+  }
+
+
   return (
       <View style={{marginTop:20}}>
         <View style={styles.container}>
@@ -63,14 +82,22 @@ const Ingredient = ({isFrigo, ingredient}) => {
                 <View style={{alignItems: 'center', justifyContent: 'center', marginLeft: 5, width: 160}}>
                     <Text style={styles.ingredientName} numberOfLines = { 1 } ellipsizeMode='tail'>{formatName(ingredient.name)}</Text>
                 </View>
-                { generateIcons() }
+                { generateIcons(ingredient) }
         </View>
         <View style={styles.horizonalBar} />
       </View>
   );
 }
 
-export default Ingredient; 
+
+const mapStateToProps = (state) => {
+  // console.log(state); 
+  return {
+    ingredientsInMyFridge: state.addToMyFridgeReducer.ingredientsToMyFridgeObjects
+  }
+}
+
+export default connect(mapStateToProps)(Ingredient); 
 
 const styles = StyleSheet.create({
   container: {

@@ -4,5 +4,6 @@ export const Colors = {
     mainWhiteColor: '#ffffff', 
     mainGrayColor: '#c4c4c4',
     mainGrayStrongColor: '#686869', 
-    mainDetailsTextColor: '#828182'
+    mainDetailsTextColor: '#828182', 
+    mainRedColor: '#FF0000'
 };
