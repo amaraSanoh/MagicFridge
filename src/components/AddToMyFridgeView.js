@@ -132,7 +132,6 @@ const AddToMyFridgeView = ({navigation, ingredientsInMyFridge}) => {
     );
   }
 
-  
   return (
     <View style={styles.container}>
         { <GenerateSortIngredientBar /> }
@@ -144,13 +143,13 @@ const AddToMyFridgeView = ({navigation, ingredientsInMyFridge}) => {
 
 
 
-
-AddToMyFridgeView.navigationOptions = {
-  title: 'Add to my fridge'
+AddToMyFridgeView.navigationOptions = ({navigation}) => {
+  return(
+    { title: (navigation.getParam("isMyList")) ? 'Add to my list' : 'Add to my fridge' }
+  );
 };
 
-const mapStateToProps = (state) => {
-  // console.log(state); 
+const mapStateToProps = (state) => { 
   return {
     ingredientsInMyFridge: state.addToMyFridgeReducer.ingredientsToMyFridgeObjects
   }

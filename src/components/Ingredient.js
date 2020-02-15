@@ -70,6 +70,20 @@ const Ingredient = ({isFrigo, isList, ingredient, dispatch, ingredientsInMyFridg
                 </TouchableOpacity>
             </View>    
         ); 
+      }else if ( !isList && !isFrigo )
+      {
+        return (
+          <View style={styles.blocIcon}>
+            <TouchableOpacity style={{marginLeft: 25}} onPress={() => (isInMyList(ingredient)) ? _unsaveIngredientInMyList(ingredient) : _saveIngredientInMyList(ingredient) } >
+                <Icon 
+                    style={styles.iconStyle}  
+                    name={MyIcons.mainListIcon} 
+                    type='font-awesome'
+                    color={ (isInMyList(ingredient)) ? Colors.mainOrangeColor : Colors.mainGrayColor } 
+                />
+            </TouchableOpacity>
+          </View>
+        ); 
       }
 
 
