@@ -9,7 +9,7 @@ import {_getIngredientImage100} from '../helpers/IngredientHelpers';
 import { connect } from 'react-redux';
 
 
-const Ingredient = ({isFrigo, ingredient, dispatch, ingredientsInMyFridge}) => {
+const Ingredient = ({isFrigo, isList, ingredient, dispatch, ingredientsInMyFridge, ingredientsinMyList}) => {
 
   const isInMyFridge = (ingredient) => 
   {
@@ -17,21 +17,50 @@ const Ingredient = ({isFrigo, ingredient, dispatch, ingredientsInMyFridge}) => {
     return false;
   }
 
+  const isInMyList = (ingredient) => 
+  {
+    if(ingredientsinMyList.findIndex(ingred => ingred.id === ingredient.id) !== -1) return true; 
+    return false;
+  }
+
+
 
   const generateIcons = (ingredient) => {
       if(isFrigo)
       {
         return (
             <View style={styles.blocIcon}>
-                <TouchableOpacity style={{marginLeft: 25}} onPress={() => alert('touché') } >
+                <TouchableOpacity style={{marginLeft: 25}} onPress={() => (isInMyList(ingredient)) ? _unsaveIngredientInMyList(ingredient) : _saveIngredientInMyList(ingredient) } >
                     <Icon 
                         style={styles.iconStyle}  
                         name={MyIcons.mainListIcon} 
                         type='font-awesome'
-                        color={ (isInMyFridge(ingredient)) ? Colors.mainOrangeColor : Colors.mainGrayColor } 
+                        color={ (isInMyList(ingredient)) ? Colors.mainOrangeColor : Colors.mainGrayColor } 
                     />
                 </TouchableOpacity>
                 <TouchableOpacity style={{marginLeft: 25}} onPress={() => _unsaveIngredientInMyFridge(ingredient) } >
+                    <Icon 
+                        style={styles.iconStyle}  
+                        name={MyIcons.mainClearIcon} 
+                        type='font-awesome'
+                        color={ Colors.mainRedColor } 
+                    />
+                </TouchableOpacity>
+            </View>    
+        ); 
+      }else if (isList)
+      {
+          return (
+            <View style={styles.blocIcon}>
+                <TouchableOpacity style={{marginLeft: 25}} onPress={() => (isInMyFridge(ingredient)) ? _unsaveIngredientInMyFridge(ingredient) : _saveIngredientInMyFridge(ingredient) } >
+                    <Icon 
+                        style={styles.iconStyle}  
+                        name={MyIcons.mainFrigeIcon} 
+                        type='font-awesome'
+                        color={ (isInMyFridge(ingredient)) ? Colors.mainOrangeColor : Colors.mainGrayColor } 
+                    />
+                </TouchableOpacity>
+                <TouchableOpacity style={{marginLeft: 25}} onPress={() => _unsaveIngredientInMyList(ingredient) } >
                     <Icon 
                         style={styles.iconStyle}  
                         name={MyIcons.mainClearIcon} 
@@ -74,6 +103,16 @@ const Ingredient = ({isFrigo, ingredient, dispatch, ingredientsInMyFridge}) => {
     dispatch(action);
   }
 
+  _saveIngredientInMyList  = async (ingredient) => {
+    const action = { type: 'ADD_INGREDIENT_TO_MY_LIST', value: ingredient };
+    dispatch(action);
+  }
+
+  _unsaveIngredientInMyList = async (ingredient) => {
+    const action = { type: 'REMOVE_INGREDIENT_TO_MY_LIST', value: ingredient };
+    dispatch(action);
+  }
+
 
   return (
       <View style={{marginTop:20}}>
@@ -91,9 +130,10 @@ const Ingredient = ({isFrigo, ingredient, dispatch, ingredientsInMyFridge}) => {
 
 
 const mapStateToProps = (state) => {
-  // console.log(state); 
+
   return {
-    ingredientsInMyFridge: state.addToMyFridgeReducer.ingredientsToMyFridgeObjects
+    ingredientsInMyFridge: state.addToMyFridgeReducer.ingredientsToMyFridgeObjects, 
+    ingredientsinMyList: state.myListReducer.ingredientsToMyListObjects
   }
 }
 

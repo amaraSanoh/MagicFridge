@@ -104,8 +104,9 @@ const MyFridge = ({navigation, ingredientsInMyFridge}) => {
           ingredients={ingredientsInMyFridge}
           refreshTop={ () => _searchIngredients() } 
           refreshing={isRefreshing} //une recharge des ingredients est en cours
-          ingredientsInMyFridge={ingredientsInMyFridge} 
+          ingredientsExtras={ingredientsInMyFridge} 
           isFrigo={true}
+          isList={false}
         />
     ); 
   }
