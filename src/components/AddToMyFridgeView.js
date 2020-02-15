@@ -83,8 +83,9 @@ const AddToMyFridgeView = ({navigation, ingredientsInMyFridge}) => {
           ingredients={ingredients}
           refreshTop={ () => _searchIngredients() } 
           refreshing={isRefreshing} //une recharge des ingredients est en cours
-          ingredientsInMyFridge={ingredientsInMyFridge} 
+          ingredientsExtras={ingredientsInMyFridge} 
           isFrigo={false}
+          isList={false}
         />
     ); 
   }
@@ -149,7 +150,7 @@ AddToMyFridgeView.navigationOptions = {
 };
 
 const mapStateToProps = (state) => {
-  console.log(state); 
+  // console.log(state); 
   return {
     ingredientsInMyFridge: state.addToMyFridgeReducer.ingredientsToMyFridgeObjects
   }

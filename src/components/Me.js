@@ -15,6 +15,10 @@ const Me = ({navigation}) => {
     navigation.navigate("MyFridge");
   }
 
+  const _navigateToMyList = () => {
+    navigation.navigate("MyList");
+  }
+
   return (
     <View style={styles.container}>
         <View style={{flex: 1}}></View>
@@ -30,7 +34,7 @@ const Me = ({navigation}) => {
                 </View>
                 <Text style={styles.btnTouchableText}>My fridge</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.btnTouchable} onPress={() => alert('My List') } >
+            <TouchableOpacity style={styles.btnTouchable} onPress={() => _navigateToMyList() } >
                 <View style={styles.btnImageBlock}>
                   <Icon 
                       style={styles.btnImage}  

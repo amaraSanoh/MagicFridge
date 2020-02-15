@@ -4,19 +4,14 @@ import { colors } from '../../definitions/Colors';
 import Ingredient from './Ingredient';
 
 
-const ListIngredients = ({ingredients, refreshTop, refreshing, ingredientsInMyFridge, isFrigo}) => {
-    
-    // _isItSaved = (recipeId) => {
-    //     if(savedRecipes.findIndex(rec => rec.id === recipeId) !== -1 ) return true; 
-    //     return false;
-    // }
+const ListIngredients = ({ingredients, refreshTop, refreshing, ingredientsExtras, isFrigo, isList}) => {
 
     return (
         <FlatList
             data={ingredients}
-            extraData={ ingredientsInMyFridge }
+            extraData={ ingredientsExtras }
             keyExtractor={(item) => item.id.toString() }
-            renderItem={ ({item}) => <Ingredient isFrigo={isFrigo} ingredient={item} /> }
+            renderItem={ ({item}) => <Ingredient isFrigo={isFrigo} isList={isList} ingredient={item} /> }
             onRefresh={ refreshTop }  //Permet de faire le chargement une fois en haut de la liste
             refreshing={ refreshing } //chargement si isRefreshing est à true
         />
