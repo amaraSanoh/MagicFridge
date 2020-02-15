@@ -112,7 +112,8 @@ const MyFridge = ({navigation, ingredientsInMyFridge}) => {
   }
 
   const _navigateToAddNewIngredient = (ingredientString) => {
-    navigation.navigate("AddToMyFridgeView", {ingredientString});
+    let isMyList = false; 
+    navigation.navigate("AddToMyFridgeView", {ingredientString, isMyList});
   }
 
   
@@ -158,10 +159,5 @@ const styles = StyleSheet.create({
     padding: 5, 
     borderRadius: 7, 
     marginTop: 10
-  }, 
-  btnImage: {
-    backgroundColor: 'white', 
-    width: 20, 
-    height: 20
   }
 });
