@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { MyIcons } from '../../definitions/MyIcons';
 import { Icon } from 'react-native-elements'; 
 
-const RecipeDetails = ({navigation, savedRecipes, dispatch}) => {
+const RecipeDetails = ({navigation, savedRecipes, dispatch, ingredientsInMyFridge}) => {
     const [recipe, setRecipe] = useState([]);
     const [erreurRecipe, setErreurRecipe] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -148,7 +148,7 @@ const RecipeDetails = ({navigation, savedRecipes, dispatch}) => {
 
 
     const _ingredientBlock = (extendedIngredients, myFridgecontent) => { 
-        myFridgecontent = []; 
+        // myFridgecontent = []; 
         inMyFridge = []; 
         missing = []; 
         extendedIngredients.forEach(ingredient => {
@@ -268,7 +268,7 @@ const RecipeDetails = ({navigation, savedRecipes, dispatch}) => {
                         { _titleBlock(recipe) }
                         { _cuisinesAndDietsBlock(recipe.cuisines, recipe.diets) }
                         { _cuisineTimeBlock(recipe) }
-                        { _ingredientBlock(recipe.extendedIngredients, []) }
+                        { _ingredientBlock(recipe.extendedIngredients, ingredientsInMyFridge) }
                         { _instructionsBlock(recipe.analyzedInstructions[0]) }
                         { _winesBlock(recipe.winePairing) }
                     </View>
@@ -332,7 +332,8 @@ RecipeDetails.navigationOptions = {
 
 const mapStateToProps = (state) => {
     return {
-        savedRecipes: state.recipeReducer.recipesObjects
+        savedRecipes: state.recipeReducer.recipesObjects, 
+        ingredientsInMyFridge: state.addToMyFridgeReducer.ingredientsToMyFridgeObjects
     }
 }
   

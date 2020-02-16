@@ -107,6 +107,8 @@ const MyFridge = ({navigation, ingredientsInMyFridge}) => {
           ingredientsExtras={ingredientsInMyFridge} 
           isFrigo={true}
           isList={false}
+          isAddToFridge={false}
+          isAddToList={false}
         />
     ); 
   }

@@ -114,6 +114,8 @@ const MyList = ({navigation, ingredientsInMyList}) => {
                 ingredientsExtras={ingredientsInMyList} 
                 isFrigo={false}
                 isList={true}
+                isAddToFridge={false}
+                isAddToList={false}
             />
         ); 
     }

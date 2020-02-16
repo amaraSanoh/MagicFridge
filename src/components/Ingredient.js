@@ -9,7 +9,7 @@ import {_getIngredientImage100} from '../helpers/IngredientHelpers';
 import { connect } from 'react-redux';
 
 
-const Ingredient = ({isFrigo, isList, ingredient, dispatch, ingredientsInMyFridge, ingredientsinMyList}) => {
+const Ingredient = ({isFrigo, isList, isAddToFridge, isAddToList, ingredient, dispatch, ingredientsInMyFridge, ingredientsinMyList}) => {
 
   const isInMyFridge = (ingredient) => 
   {
@@ -70,7 +70,7 @@ const Ingredient = ({isFrigo, isList, ingredient, dispatch, ingredientsInMyFridg
                 </TouchableOpacity>
             </View>    
         ); 
-      }else if ( !isList && !isFrigo )
+      }else if ( isAddToList )
       {
         return (
           <View style={styles.blocIcon}>
@@ -84,21 +84,21 @@ const Ingredient = ({isFrigo, isList, ingredient, dispatch, ingredientsInMyFridg
             </TouchableOpacity>
           </View>
         ); 
+      }else if(isAddToFridge)
+      {
+        return (
+          <View style={styles.blocIcon}>
+              <TouchableOpacity style={{marginLeft: 25}} onPress={() => (isInMyFridge(ingredient)) ? _unsaveIngredientInMyFridge(ingredient) : _saveIngredientInMyFridge(ingredient) } >
+                  <Icon 
+                      style={styles.iconStyle}  
+                      name={MyIcons.mainFrigeIcon} 
+                      type='font-awesome'
+                      color={ (isInMyFridge(ingredient)) ? Colors.mainOrangeColor : Colors.mainGrayColor } 
+                  />
+              </TouchableOpacity>
+          </View>
+        ); 
       }
-
-
-      return (
-        <View style={styles.blocIcon}>
-            <TouchableOpacity style={{marginLeft: 25}} onPress={() => (isInMyFridge(ingredient)) ? _unsaveIngredientInMyFridge(ingredient) : _saveIngredientInMyFridge(ingredient) } >
-                <Icon 
-                    style={styles.iconStyle}  
-                    name={MyIcons.mainFrigeIcon} 
-                    type='font-awesome'
-                    color={ (isInMyFridge(ingredient)) ? Colors.mainOrangeColor : Colors.mainGrayColor } 
-                />
-            </TouchableOpacity>
-        </View>
-      ); 
   }
 
   const formatName = (name) => 

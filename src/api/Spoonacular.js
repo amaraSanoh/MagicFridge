@@ -10,7 +10,7 @@ const PATH_API_RECIPE_DETAILS_START = `https://api.spoonacular.com/recipes/`;
 const PATH_API_RECIPE_DETAILS_END = `/information?apiKey=`+API_KEY+`&includeNutrition=true`;
 const RECIPE_ID = ' '; 
 const PATH_API_RECIPES_BY_INGREDIENTS = `https://api.spoonacular.com/recipes/findByIngredients?apiKey=bbcb691cf0c84258862750810dabb1be&ingredients=`; 
-const INGREDIENTS = 'apples,+flour,+sugar'; 
+const INGREDIENTS = ''; 
 const PATH_API_INGREDIENTS_AUTOC = `https://api.spoonacular.com/food/ingredients/autocomplete?apiKey=bbcb691cf0c84258862750810dabb1be&number=10&metaInformation=true&query=`; 
 const INGREDIENT_AUTOC = ' '; 
 

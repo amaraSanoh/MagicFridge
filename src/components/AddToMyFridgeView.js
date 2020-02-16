@@ -86,6 +86,8 @@ const AddToMyFridgeView = ({navigation, ingredientsInMyFridge}) => {
           ingredientsExtras={ingredientsInMyFridge} 
           isFrigo={false}
           isList={false}
+          isAddToFridge={!navigation.getParam("isMyList")}
+          isAddToList={navigation.getParam("isMyList")}
         />
     ); 
   }

@@ -11,7 +11,7 @@ import { Colors } from '../../definitions/Colors';
 import { connect } from 'react-redux';
 
 
-const Search = ({navigation, savedRecipes}) => {
+const Search = ({navigation, savedRecipes, ingredientsInMyFridge}) => {
   const [recipes, setRecipes] = useState([]);  
   const [isRefreshing, setRefreshingState] = useState( false ); //pour savoir si une recharge de recettes est en cours
   const [errorDataLoading, setErrorDataLoading] = useState(false);
@@ -74,7 +74,20 @@ const Search = ({navigation, savedRecipes}) => {
   const _getMaxResults = () => {
     return paginationData.current.currentMaxResults;
   }
-  
+
+  const _generateMyFridgeIngredientsString = () => 
+  {
+    let ingredientsString = ''; 
+    let tabTaille = ingredientsInMyFridge.length; 
+    for(let i = 0; i < tabTaille; i++)
+    {
+      if(i < tabTaille - 1) ingredientsString += ingredientsInMyFridge[i].name+",+"; 
+      else ingredientsString += ingredientsInMyFridge[i].name; 
+    } 
+    
+    return ingredientsString; 
+  }
+
 
   const _loadRecipes = async (prevRecipes) => {
     setStandardOrCanICook(true); //false => standard search
@@ -118,7 +131,7 @@ const Search = ({navigation, savedRecipes}) => {
     try 
     {
       var spoonacularSearchResult = ( await getRecipesByIngredients( myFridgeIngredients ) );
-      let decalage = _getOffset() + spoonacularSearchResult.number; 
+      // let decalage = _getOffset() + spoonacularSearchResult.number; 
       setRecipes( spoonacularSearchResult ); 
       setErrorDataLoading(false);
     } 
@@ -220,11 +233,10 @@ const Search = ({navigation, savedRecipes}) => {
   }
 
   const whatCanICookToday = () => {
-    let myFridgeIngredients = 'apples,+flour,+sugar'; 
     return (
       <View>
           <Text  style={{alignSelf: 'center'}}>OR</Text>
-          <TouchableOpacity style={styles.btnWhoCanICookToday} onPress={() => _searchRecipesByIngredients(myFridgeIngredients)} >
+          <TouchableOpacity style={styles.btnWhoCanICookToday} onPress={() => _searchRecipesByIngredients(_generateMyFridgeIngredientsString())} >
             <Text style={{color: 'white'}}>What can i cook today ?</Text>
           </TouchableOpacity>
       </View>
@@ -269,7 +281,8 @@ Search.navigationOptions = {
 
 const mapStateToProps = (state) => {
   return {
-      savedRecipes: state.recipeReducer.recipesObjects
+      savedRecipes: state.recipeReducer.recipesObjects, 
+      ingredientsInMyFridge: state.addToMyFridgeReducer.ingredientsToMyFridgeObjects
   }
 }
 
