@@ -88,7 +88,6 @@ const Search = ({navigation, savedRecipes, ingredientsInMyFridge}) => {
     return ingredientsString; 
   }
 
-  console.log(_generateMyFridgeIngredientsString()); 
 
   const _loadRecipes = async (prevRecipes) => {
     setStandardOrCanICook(true); //false => standard search
