@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { StyleSheet, Text, View, Button, Image, CheckBox } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Icon } from 'react-native-elements'; 
@@ -6,19 +6,27 @@ import { Colors } from '../../definitions/Colors';
 import { MyIcons } from '../../definitions/MyIcons';
 
 const Setting = () => {
+    const [removeInChoppList, setRemoveInChoppList] = useState(false); 
+    const [addInChoppList, setAddInChoppList] = useState(false); 
 
   const configuration = () => {
     return (
         <View>
             <Text style={styles.textConfStyle}>Configuration</Text>
             <View style={styles.groupeCheckText}>
-                <CheckBox  onValueChange={() => alert('ok')}/>
+                <CheckBox
+                    value={addInChoppList}
+                    onValueChange={() => {setAddInChoppList(!addInChoppList); alert("mettre à jour le state global "+addInChoppList)} }
+                />
                 <Text numberOfLines={2} style={styles.textSize}>
                     Add ingredients removed from the fridge to the shopping list
                 </Text>
             </View>
             <View style={styles.groupeCheckText}>
-                <CheckBox  onValueChange={() => alert('ok')}/>
+                <CheckBox
+                    value={removeInChoppList}
+                    onValueChange={() => { setRemoveInChoppList(!removeInChoppList); alert("mettre à jour le state global "+removeInChoppList) } }
+                />
                 <Text numberOfLines={2} style={styles.textSize}>
                     When adding an ingredient to the fridge from the shopping list, remove it from the shopping list 
                 </Text>
