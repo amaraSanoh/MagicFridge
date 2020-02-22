@@ -9,7 +9,7 @@ import {_getIngredientImage100} from '../helpers/IngredientHelpers';
 import { connect } from 'react-redux';
 
 
-const Ingredient = ({isFrigo, isList, isAddToFridge, isAddToList, ingredient, dispatch, ingredientsInMyFridge, ingredientsinMyList}) => {
+const Ingredient = ({isFrigo, isList, isAddToFridge, isAddToList, ingredient, dispatch, ingredientsInMyFridge, ingredientsinMyList, settingInformations}) => {
 
   const isInMyFridge = (ingredient) => 
   {
@@ -38,7 +38,7 @@ const Ingredient = ({isFrigo, isList, isAddToFridge, isAddToList, ingredient, di
                         color={ (isInMyList(ingredient)) ? Colors.mainOrangeColor : Colors.mainGrayColor } 
                     />
                 </TouchableOpacity>
-                <TouchableOpacity style={{marginLeft: 25}} onPress={() => _unsaveIngredientInMyFridge(ingredient) } >
+                <TouchableOpacity style={{marginLeft: 25}} onPress={() => { _unsaveIngredientInMyFridge(ingredient); _whenIngredientRemovedInMyFridge_AddItInMyList(ingredient); } } >
                     <Icon 
                         style={styles.iconStyle}  
                         name={MyIcons.mainClearIcon} 
@@ -52,7 +52,12 @@ const Ingredient = ({isFrigo, isList, isAddToFridge, isAddToList, ingredient, di
       {
           return (
             <View style={styles.blocIcon}>
-                <TouchableOpacity style={{marginLeft: 25}} onPress={() => (isInMyFridge(ingredient)) ? _unsaveIngredientInMyFridge(ingredient) : _saveIngredientInMyFridge(ingredient) } >
+                <TouchableOpacity style={{marginLeft: 25}} onPress={() => 
+                    { 
+                      if(isInMyFridge(ingredient)) _unsaveIngredientInMyFridge(ingredient);
+                      else { _saveIngredientInMyFridge(ingredient); _whenAddingIngredientFridgeFromShoppList_removeItFromShoppList(ingredient); } 
+                    } 
+                  } >
                     <Icon 
                         style={styles.iconStyle}  
                         name={MyIcons.mainFrigeIcon} 
@@ -127,6 +132,19 @@ const Ingredient = ({isFrigo, isList, isAddToFridge, isAddToList, ingredient, di
     dispatch(action);
   }
 
+  _whenIngredientRemovedInMyFridge_AddItInMyList = async (ingredient) => {
+    if(settingInformations.addInShoppList)
+    {
+      _saveIngredientInMyList(ingredient);
+    }
+  }
+
+  _whenAddingIngredientFridgeFromShoppList_removeItFromShoppList = async (ingredient) => {
+    if(settingInformations.removeInShoppList)
+    {
+      _unsaveIngredientInMyList(ingredient);
+    }
+  }
 
   return (
       <View style={{marginTop:20}}>
@@ -147,7 +165,8 @@ const mapStateToProps = (state) => {
 
   return {
     ingredientsInMyFridge: state.addToMyFridgeReducer.ingredientsToMyFridgeObjects, 
-    ingredientsinMyList: state.myListReducer.ingredientsToMyListObjects
+    ingredientsinMyList: state.myListReducer.ingredientsToMyListObjects, 
+    settingInformations: state.settingReducer.settingInformations
   }
 }
 
