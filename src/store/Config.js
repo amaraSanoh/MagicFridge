@@ -1,8 +1,5 @@
 import { createStore } from 'redux';
 
-// import AddToMyFridgeReducer from './reducers/AddToMyFridgeReducer';
-// import RecipeReducer from './reducers/RecipeReducer';
-// import MyListReducer from './reducers/MyListReducer';
 import { persistStore, persistReducer } from 'redux-persist'; 
 import { AsyncStorage } from 'react-native'; 
 import Index from './reducers/Index';
