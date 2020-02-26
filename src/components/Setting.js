@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, Button, Image, CheckBox } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Icon } from 'react-native-elements'; 
@@ -6,10 +6,14 @@ import { Colors } from '../../definitions/Colors';
 import { MyIcons } from '../../definitions/MyIcons';
 import { connect } from 'react-redux';
 
-const Setting = ({requestsInformation, dispatch}) => {
+const Setting = ({requestsInformation, configInformations, dispatch}) => {
     const [addInShoppList, setAddInShoppList] = useState(false); 
     const [removeInShoppList, setRemoveInShoppList] = useState(false); 
 
+    useEffect(() => {
+        setAddInShoppList(configInformations.addInShoppList);
+        setRemoveInShoppList(configInformations.removeInShoppList); 
+    }, []); //le deuxième paramètre permet de ne pas appeler la fonction à chaque fois    
 
     const configuration = () => {
         return (
@@ -68,7 +72,7 @@ const Setting = ({requestsInformation, dispatch}) => {
                     <Text style={styles.btnTouchableText}>Clear data</Text>
                 </TouchableOpacity>
             </View>
-        ); 
+        );
     }
 
     _updateCheckboxesInformationsToState  = async (removeInShoppList, addInShoppList) => { 
@@ -88,7 +92,8 @@ const Setting = ({requestsInformation, dispatch}) => {
 
 const mapStateToProps = (state) => {
     return {
-      requestsInformation: []
+      requestsInformation: [], 
+      configInformations: state.settingReducer.settingInformations 
     }
 }
   
