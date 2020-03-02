@@ -7,7 +7,7 @@ export const updateCredit = (headers) => {
 
     if(creditsUsedString == undefined)
     {
-        creditsUsed = 0; 
+        return null;
     }
     else
     {
