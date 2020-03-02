@@ -47,7 +47,7 @@ const Setting = ({requestsInformation, configInformations, dispatch}) => {
                 <Text style={styles.textConfStyle}>API</Text>
                 <View style={styles.groupeTextApiInfo}>
                     <Text style={styles.textSize}>API credits remaining: </Text>
-                    <Text style={[styles.textSize, {fontWeight: 'bold'}]}>147.8</Text>
+                    <Text style={[styles.textSize, {fontWeight: 'bold'}]}> { requestsInformation.creditRemaining } </Text>
                 </View>
                 <View style={styles.groupeTextApiInfo}>
                     <Text style={styles.textSize}>Last update: </Text>
@@ -92,7 +92,7 @@ const Setting = ({requestsInformation, configInformations, dispatch}) => {
 
 const mapStateToProps = (state) => {
     return {
-      requestsInformation: [], 
+      requestsInformation: state.creditReducer.credit, 
       configInformations: state.settingReducer.settingInformations 
     }
 }

@@ -10,6 +10,7 @@ import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-
 import ListIngredients from './ListIngredients';
 import {IngredientsData} from '../../data/IngredientsData';
 import {_getIngredientImage100} from '../helpers/IngredientHelpers';
+import { totalCreditPerDay, UPDATE_CREDIT, updateCredit } from '../constants/CreditConstant';
 
 
 const AddToMyFridgeView = ({navigation, ingredientsInMyFridge}) => {
@@ -47,14 +48,22 @@ const AddToMyFridgeView = ({navigation, ingredientsInMyFridge}) => {
     return sortByData.current.currentSortByString; 
   }
 
+  const _updateCredit = async (headers) => {
+    let action = updateCredit(headers);
+    dispatch(action);  
+  }
+
   const _loadIngredients = async () => {
     setRefreshingState(true); 
     try 
     {
-      var spoonacularSearchResult = ( await getIngredientsAutoc( (sortString.length <= 0) ? navigation.getParam("ingredientString") : getCurrentSortByString()) );
+      var datas = ( await getIngredientsAutoc( (sortString.length <= 0) ? navigation.getParam("ingredientString") : getCurrentSortByString()) );
+      let spoonacularSearchResult = datas.data;
+      let headers = datas.headers;
       setIngredients( spoonacularSearchResult ); 
       setErrorDataLoading(false);
-      console.log("call api"); 
+      
+      _updateCredit(headers);
     } 
     catch (error) 
     {

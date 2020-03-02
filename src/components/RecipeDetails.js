@@ -7,6 +7,7 @@ import { Colors } from '../../definitions/Colors';
 import { connect } from 'react-redux';
 import { MyIcons } from '../../definitions/MyIcons';
 import { Icon } from 'react-native-elements'; 
+import { totalCreditPerDay, UPDATE_CREDIT, updateCredit } from '../constants/CreditConstant';
 
 const RecipeDetails = ({navigation, savedRecipes, dispatch, ingredientsInMyFridge}) => {
     const [recipe, setRecipe] = useState([]);
@@ -17,14 +18,22 @@ const RecipeDetails = ({navigation, savedRecipes, dispatch, ingredientsInMyFridg
         _loadRecipe(); 
     }, []); //le deuxième paramètre permet de ne pas appeler la fonction à chaque fois
       
+    const _updateCredit = async (headers) => {
+        let action = updateCredit(headers);
+        dispatch(action);  
+    }
 
     const _loadRecipe = async () => {
         setErreurRecipe(false); 
         setIsLoading(true);
         try {
-            var spoonacularRecipeDetailsResult = ( await getRecipeDetailsById( navigation.getParam("recipeId") ) );
+            let datas = ( await getRecipeDetailsById( navigation.getParam("recipeId") ) );
+            let spoonacularRecipeDetailsResult = datas.data; 
+            let headers = datas.headers;
             setRecipe( spoonacularRecipeDetailsResult ); 
             setIsLoading(false);
+
+            _updateCredit(headers); 
         } catch (error) {
             setRecipe([]);
             setErreurRecipe(true);

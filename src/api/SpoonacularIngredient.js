@@ -9,7 +9,12 @@ export async function getIngredientsAutoc( ingredientAutoc ) {
   
       const response = await fetch(url);
       if (response.ok) {
-        return response.json();
+        const datas = {
+          data: await response.json(), 
+          headers: response.headers
+        }; 
+        
+        return datas;
       }
       throw new Error(response.status);
   
