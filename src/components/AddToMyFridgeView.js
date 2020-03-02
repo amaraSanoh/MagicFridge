@@ -13,7 +13,7 @@ import {_getIngredientImage100} from '../helpers/IngredientHelpers';
 import { totalCreditPerDay, UPDATE_CREDIT, updateCredit } from '../constants/CreditConstant';
 
 
-const AddToMyFridgeView = ({navigation, ingredientsInMyFridge}) => {
+const AddToMyFridgeView = ({navigation, ingredientsInMyFridge, dispatch}) => {
   const [ingredients, setIngredients] = useState([]);  
   const [sortString, setSortString] = useState('');
   const [isRefreshing, setRefreshingState] = useState( false ); //pour savoir si une recharge des ingredients est en cours
@@ -36,9 +36,11 @@ const AddToMyFridgeView = ({navigation, ingredientsInMyFridge}) => {
   const setCurrentSortByString = (text) => {
     if(text == 'Backspace')
     {
-      taille = sortByData.current.currentSortByString.length; 
-      sortByData.current.currentSortByString = sortByData.current.currentSortByString.substring(0, taille-1); 
-    }else if(text.length == 1 || text.length == '1')
+      let taille = sortByData.current.currentSortByString.length; 
+      if(taille > 1)
+        sortByData.current.currentSortByString = sortByData.current.currentSortByString.substring(0, taille-1); 
+    }
+    else if(text.length == 1 || text.length == '1')
     {
       sortByData.current.currentSortByString += text;
     } 
@@ -50,6 +52,7 @@ const AddToMyFridgeView = ({navigation, ingredientsInMyFridge}) => {
 
   const _updateCredit = async (headers) => {
     let action = updateCredit(headers);
+    if(action == null) return;
     dispatch(action);  
   }
 

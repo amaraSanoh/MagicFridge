@@ -20,6 +20,7 @@ const RecipeDetails = ({navigation, savedRecipes, dispatch, ingredientsInMyFridg
       
     const _updateCredit = async (headers) => {
         let action = updateCredit(headers);
+        if(action == null) return;
         dispatch(action);  
     }
 

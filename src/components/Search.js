@@ -91,7 +91,7 @@ const Search = ({navigation, savedRecipes, ingredientsInMyFridge, dispatch}) => 
 
   const _updateCredit = async (headers) => {
     let action = updateCredit(headers);
-    // console.log(action); 
+    if(action == null) return;
     dispatch(action);  
   }
 
