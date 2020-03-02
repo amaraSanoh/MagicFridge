@@ -21,8 +21,14 @@ export async function getRecipesByRecipeNameCuisineDiet( recipeName, cuisine, di
       const url = PATH_API_RECIPES+`${recipeName || RECIPE_NAME}&cuisine=${cuisine || CUISINE}&diet=${diet || DIET}&offset=${start || START}&number=${number || NUMBER}`;  
   
       const response = await fetch(url);
-      if (response.ok) {
-        return response.json();
+      if (response.ok) 
+      {
+        const datas = {
+          data: await response.json(), 
+          headers: await response.headers
+        }; 
+        
+        return datas;
       }
       throw new Error(response.status);
   
@@ -38,8 +44,14 @@ export async function getRecipeDetailsById( recipeId ) {
     const url = PATH_API_RECIPE_DETAILS_START+`${recipeId || RECIPE_ID}`+PATH_API_RECIPE_DETAILS_END;  
 
     const response = await fetch(url);
-    if (response.ok) {
-      return response.json();
+    if (response.ok) 
+    {
+      const datas = {
+        data: await response.json(), 
+        headers: await response.headers
+      }; 
+
+      return datas;
     }
     throw new Error(response.status);
 
@@ -56,8 +68,14 @@ export async function getRecipesByIngredients( ingredients) {
     const url = PATH_API_RECIPES_BY_INGREDIENTS+`${ingredients || INGREDIENTS}&number=10`;  
 
     const response = await fetch(url);
-    if (response.ok) {
-      return response.json();
+    if (response.ok) 
+    {
+      const datas = {
+        data: await response.json(), 
+        headers: await response.headers
+      }; 
+      
+      return datas;
     }
     throw new Error(response.status);
 

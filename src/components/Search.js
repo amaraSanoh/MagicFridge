@@ -9,9 +9,10 @@ import {getRecipesByRecipeNameCuisineDiet, getRecipesByIngredients} from '../api
 import ListRecipe from './ListRecipe'; 
 import { Colors } from '../../definitions/Colors';
 import { connect } from 'react-redux';
+import { totalCreditPerDay, UPDATE_CREDIT, updateCredit } from '../constants/CreditConstant';
 
 
-const Search = ({navigation, savedRecipes, ingredientsInMyFridge}) => {
+const Search = ({navigation, savedRecipes, ingredientsInMyFridge, dispatch}) => {
   const [recipes, setRecipes] = useState([]);  
   const [isRefreshing, setRefreshingState] = useState( false ); //pour savoir si une recharge de recettes est en cours
   const [errorDataLoading, setErrorDataLoading] = useState(false);
@@ -88,18 +89,28 @@ const Search = ({navigation, savedRecipes, ingredientsInMyFridge}) => {
     return ingredientsString; 
   }
 
+  const _updateCredit = async (headers) => {
+    let action = updateCredit(headers);
+    // console.log(action); 
+    dispatch(action);  
+  }
+
 
   const _loadRecipes = async (prevRecipes) => {
     setStandardOrCanICook(true); //false => standard search
     setRefreshingState(true); 
     try 
     {
-      var spoonacularSearchResult = ( await getRecipesByRecipeNameCuisineDiet( _getRecipeName(), _getCuisine(), _getDiet(), _getOffset(), _getNumber() ) );
+      let datas = ( await getRecipesByRecipeNameCuisineDiet( _getRecipeName(), _getCuisine(), _getDiet(), _getOffset(), _getNumber() ) );
+      let spoonacularSearchResult = datas.data;
+      let headers = datas.headers;
       let decalage = _getOffset() + spoonacularSearchResult.number; 
       _setOffset(decalage); 
       _setMaxResults(spoonacularSearchResult.totalResults); 
       setRecipes( [...prevRecipes, ...spoonacularSearchResult.results] ); 
       setErrorDataLoading(false);
+
+      _updateCredit(headers);
     } 
     catch (error) 
     {
@@ -130,9 +141,13 @@ const Search = ({navigation, savedRecipes, ingredientsInMyFridge}) => {
     setRefreshingState(true); 
     try 
     {
-      var spoonacularSearchResult = ( await getRecipesByIngredients( myFridgeIngredients ) );
+      let datas  = ( await getRecipesByIngredients( myFridgeIngredients ) );
+      let spoonacularSearchResult = datas.data; 
+      let headers = datas.headers;
       setRecipes( spoonacularSearchResult ); 
       setErrorDataLoading(false);
+
+      _updateCredit(headers);
     } 
     catch (error) 
     {

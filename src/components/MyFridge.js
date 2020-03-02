@@ -2,8 +2,6 @@ import React, {useState, useEffect, useRef} from 'react';
 import { Icon } from 'react-native-elements'; 
 import { StyleSheet, Text, View, Button, Image, TextInput, Keyboard } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import RNPickerSelect from 'react-native-picker-select';
-import {getIngredientsAutoc} from '../api/SpoonacularIngredient';
 import { Colors } from '../../definitions/Colors';
 import { connect } from 'react-redux';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
