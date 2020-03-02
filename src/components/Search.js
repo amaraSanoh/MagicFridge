@@ -131,7 +131,6 @@ const Search = ({navigation, savedRecipes, ingredientsInMyFridge}) => {
     try 
     {
       var spoonacularSearchResult = ( await getRecipesByIngredients( myFridgeIngredients ) );
-      // let decalage = _getOffset() + spoonacularSearchResult.number; 
       setRecipes( spoonacularSearchResult ); 
       setErrorDataLoading(false);
     } 
@@ -220,7 +219,7 @@ const Search = ({navigation, savedRecipes, ingredientsInMyFridge}) => {
               style={{padding: 5, borderBottomColor: '#ff9b42', borderBottomWidth: 2, flex:4}} 
               onChangeText={ (text) => _setRecipeName(text) }
           />
-          <TouchableOpacity style={styles.btnTouchable} onPress={() => _searchRecipes() } >
+          <TouchableOpacity style={styles.btnTouchable} onPress={() => { _searchRecipes(); Keyboard.dismiss(); } } >
             <Icon 
                 style={ styles.tabIcon }  
                 name='search' 
