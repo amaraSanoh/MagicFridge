@@ -1,19 +1,60 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, Button, Image, CheckBox } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { StyleSheet, Text, View, CheckBox, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements'; 
 import { Colors } from '../../definitions/Colors';
 import { MyIcons } from '../../definitions/MyIcons';
 import { connect } from 'react-redux';
+import { Dialog } from 'react-native-simple-dialogs';
 
 const Setting = ({requestsInformation, configInformations, dispatch}) => {
     const [addInShoppList, setAddInShoppList] = useState(false); 
     const [removeInShoppList, setRemoveInShoppList] = useState(false); 
+    const [modalVisible, setModalVisible] = useState(false); 
 
     useEffect(() => {
         setAddInShoppList(configInformations.addInShoppList);
         setRemoveInShoppList(configInformations.removeInShoppList); 
     }, []); //le deuxième paramètre permet de ne pas appeler la fonction à chaque fois    
+
+    const getClearDataModal = () => 
+    {
+        return (
+            <Dialog
+                visible={modalVisible}
+                title="Clear data"
+                titleStyle={{marginBottom:20, alignSelf: 'center'}}
+                dialogStyle={{backgroundColor: 'orange'}}
+                onTouchOutside={() => setModalVisible(false)} >
+                <View>
+                    <Text style={{marginBottom:20, alignSelf: 'center'}}>Are you sure about that ?</Text>
+                    <View style={{flexDirection:'row', justifyContent: 'space-between', marginTop: 40 }}>
+                        <TouchableOpacity style={[styles.btnTouchableModal, {backgroundColor: Colors.mainGrayStrongColor}]} onPress={() => setModalVisible(false) }>
+                            <View style={styles.btnImageBlock}>
+                                <Icon 
+                                    style={styles.btnImage}  
+                                    name={MyIcons.mainCloseModalIcon} 
+                                    type='font-awesome'
+                                    color={ Colors.mainWhiteColor } 
+                                />
+                            </View>
+                            <Text style={styles.btnTouchableTextModal}>Close</Text>
+                        </TouchableOpacity> 
+                        <TouchableOpacity style={[styles.btnTouchableModal, {backgroundColor: Colors.mainRedColor}]} onPress={() => { _clearData(); setModalVisible(false);  }}>
+                            <View style={styles.btnImageBlock}>
+                            <Icon 
+                                style={styles.btnImage}  
+                                name={MyIcons.mainClearIcon} 
+                                type='font-awesome'
+                                color={ Colors.mainWhiteColor } 
+                            />
+                            </View>
+                            <Text style={styles.btnTouchableTextModal}>Clear</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Dialog>
+        );
+    }
 
     const configuration = () => {
         return (
@@ -59,18 +100,21 @@ const Setting = ({requestsInformation, configInformations, dispatch}) => {
 
     const clearDataButton = () => {
         return (
-            <View style={styles.btnDataClear}>
-                <TouchableOpacity style={styles.btnTouchable} onPress={() => _clearData() } >
-                    <View style={styles.btnImageBlock}>
-                    <Icon 
-                        style={styles.btnImage}  
-                        name={MyIcons.mainClearIcon} 
-                        type='font-awesome'
-                        color={ Colors.mainWhiteColor } 
-                    />
-                    </View>
-                    <Text style={styles.btnTouchableText}>Clear data</Text>
-                </TouchableOpacity>
+            <View>
+                { getClearDataModal() }
+                <View style={styles.btnDataClear}>
+                    <TouchableOpacity style={styles.btnTouchable} onPress={() => setModalVisible(true) }>
+                        <View style={styles.btnImageBlock}>
+                        <Icon 
+                            style={styles.btnImage}  
+                            name={MyIcons.mainClearIcon} 
+                            type='font-awesome'
+                            color={ Colors.mainWhiteColor } 
+                        />
+                        </View>
+                        <Text style={styles.btnTouchableText}>Clear data</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         );
     }
@@ -178,6 +222,17 @@ const styles = StyleSheet.create({
         backgroundColor: '#ff9b42', 
         marginBottom: 30
     },
+    btnTouchableModal: {
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        height: 40, 
+        width: 120,
+        borderRadius: 5,
+        borderWidth: 1,
+        borderColor: '#fff', 
+        backgroundColor: '#ff9b42', 
+        marginBottom: 30
+    },
     btnImage: {
         width: 36, 
         height: 40, 
@@ -193,6 +248,11 @@ const styles = StyleSheet.create({
       }, 
     btnTouchableText: {
         marginLeft: 30, 
+        color: 'white', 
+        fontWeight: 'bold'
+    }, 
+    btnTouchableTextModal: {
+        marginLeft: 5, 
         color: 'white', 
         fontWeight: 'bold'
     }

@@ -5,5 +5,6 @@ export const MyIcons = {
     mainSearchIcon: 'search',
     mainMeIcon: 'user',
     mainSettingIcon: 'cog', 
-    mainClearIcon: 'trash'
+    mainClearIcon: 'trash', 
+    mainCloseModalIcon: 'times'
 };
