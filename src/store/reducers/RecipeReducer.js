@@ -10,10 +10,16 @@ function saveRecipes(state = initialState, action) {
         }
       return nextState || state
     case 'UNSAVE_RECIPE':
-            nextState = {
-                ...state,
-                recipesObjects: state.recipesObjects.filter(rec => rec.id !== action.value.id)
-            };
+        nextState = {
+            ...state,
+            recipesObjects: state.recipesObjects.filter(rec => rec.id !== action.value.id)
+        };
+      return nextState || state
+    case 'CLEAR_DATA_RECIPE':
+        nextState = {
+            ...state,
+            recipesObjects: []
+        };
       return nextState || state
     default:
       return state

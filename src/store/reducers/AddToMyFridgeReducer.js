@@ -10,10 +10,16 @@ function saveIngredientToMyFridge(state = initialState, action) {
         }
       return nextState || state
     case 'REMOVE_INGREDIENT_TO_MY_FRIDGE':
-            nextState = {
-                ...state,
-                ingredientsToMyFridgeObjects: state.ingredientsToMyFridgeObjects.filter(ingred => ingred.id !== action.value.id)
-            };
+        nextState = {
+            ...state,
+            ingredientsToMyFridgeObjects: state.ingredientsToMyFridgeObjects.filter(ingred => ingred.id !== action.value.id)
+        };
+      return nextState || state
+    case 'CLEAR_DATA_FRIDGE':
+        nextState = {
+          ...state,
+          ingredientsToMyFridgeObjects: []
+        };
       return nextState || state
     default:
       return state

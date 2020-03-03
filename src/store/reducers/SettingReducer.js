@@ -9,6 +9,12 @@ function changeSettings(state = initialState, action) {
             settingInformations: action.value 
         }
       return nextState || state
+    case 'CLEAR_DATA_SETTING':
+        nextState = {
+            ...state, 
+            settingInformations: { removeInShoppList: false, addInShoppList: false} 
+        }
+      return nextState || state
     default:
       return state
   }
