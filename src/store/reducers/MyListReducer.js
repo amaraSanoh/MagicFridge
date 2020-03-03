@@ -15,6 +15,12 @@ function saveIngredientToMyList(state = initialState, action) {
                 ingredientsToMyListObjects: state.ingredientsToMyListObjects.filter(ingred => ingred.id !== action.value.id)
             };
       return nextState || state
+    case 'CLEAR_DATA_SHOPP_LIST':
+        nextState = {
+            ...state,
+            ingredientsToMyListObjects: []
+        };
+        return nextState || state
     default:
       return state
   }

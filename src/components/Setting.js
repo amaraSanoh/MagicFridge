@@ -60,7 +60,7 @@ const Setting = ({requestsInformation, configInformations, dispatch}) => {
     const clearDataButton = () => {
         return (
             <View style={styles.btnDataClear}>
-                <TouchableOpacity style={styles.btnTouchable} onPress={() => alert('Clear data')} >
+                <TouchableOpacity style={styles.btnTouchable} onPress={() => _clearData() } >
                     <View style={styles.btnImageBlock}>
                     <Icon 
                         style={styles.btnImage}  
@@ -79,6 +79,41 @@ const Setting = ({requestsInformation, configInformations, dispatch}) => {
         let val = { removeInShoppList: removeInShoppList, addInShoppList: addInShoppList}
         const action = { type: 'UPDATE_CHECKBOXES_INFORMATION', value: val };
         dispatch(action);
+    }
+
+    const __clearFridge = async () => 
+    {
+        const action = { type: 'CLEAR_DATA_FRIDGE', value: null };
+        dispatch(action);
+    }
+
+    const __clearShoppList = async () => 
+    {
+        const action = { type: 'CLEAR_DATA_SHOPP_LIST', value: null };
+        dispatch(action);
+    }
+
+    const __clearRecipe = async () => 
+    {
+        const action = { type: 'CLEAR_DATA_RECIPE', value: null };
+        dispatch(action);
+    }
+
+    const __clearSetting = async () => 
+    {
+        let val = { removeInShoppList: false, addInShoppList: false }
+        const action = { type: 'CLEAR_DATA_SETTING', value: val };
+        dispatch(action);
+    }
+
+    _clearData = async () => 
+    {
+        __clearFridge(); 
+        __clearShoppList(); 
+        __clearRecipe();
+        __clearSetting(); 
+        setAddInShoppList(false);
+        setRemoveInShoppList(false);
     }
     
     return (
