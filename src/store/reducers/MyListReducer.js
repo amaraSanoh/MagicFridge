@@ -5,8 +5,8 @@ function saveIngredientToMyList(state = initialState, action) {
   switch (action.type) {
     case 'ADD_INGREDIENT_TO_MY_LIST':
         nextState = {
-            ...state, 
-            ingredientsToMyListObjects: [...state.ingredientsToMyListObjects, action.value] 
+          ...state, 
+          ingredientsToMyListObjects: [...state.ingredientsToMyListObjects, action.value] 
         }
       return nextState || state
     case 'REMOVE_INGREDIENT_TO_MY_LIST':

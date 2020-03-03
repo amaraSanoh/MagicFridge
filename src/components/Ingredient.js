@@ -113,8 +113,11 @@ const Ingredient = ({isFrigo, isList, isAddToFridge, isAddToList, ingredient, di
   }
 
   _saveIngredientInMyFridge  = async (ingredient) => {
-    const action = { type: 'ADD_INGREDIENT_TO_MY_FRIDGE', value: ingredient };
-    dispatch(action);
+    if(!isInMyFridge(ingredient))
+    {
+      const action = { type: 'ADD_INGREDIENT_TO_MY_FRIDGE', value: ingredient };
+      dispatch(action);
+    }
   }
 
   _unsaveIngredientInMyFridge = async (ingredient) => {
@@ -123,8 +126,11 @@ const Ingredient = ({isFrigo, isList, isAddToFridge, isAddToList, ingredient, di
   }
 
   _saveIngredientInMyList  = async (ingredient) => {
-    const action = { type: 'ADD_INGREDIENT_TO_MY_LIST', value: ingredient };
-    dispatch(action);
+    if(!isInMyList(ingredient))
+    {
+      const action = { type: 'ADD_INGREDIENT_TO_MY_LIST', value: ingredient };
+      dispatch(action);
+    }
   }
 
   _unsaveIngredientInMyList = async (ingredient) => {
@@ -133,7 +139,7 @@ const Ingredient = ({isFrigo, isList, isAddToFridge, isAddToList, ingredient, di
   }
 
   _whenIngredientRemovedInMyFridge_AddItInMyList = async (ingredient) => {
-    if(settingInformations.addInShoppList)
+    if(settingInformations.addInShoppList && !isInMyList(ingredient))
     {
       _saveIngredientInMyList(ingredient);
     }

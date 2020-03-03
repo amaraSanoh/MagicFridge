@@ -51,7 +51,7 @@ const Setting = ({requestsInformation, configInformations, dispatch}) => {
                 </View>
                 <View style={styles.groupeTextApiInfo}>
                     <Text style={styles.textSize}>Last update: </Text>
-                    <Text style={[styles.textSize, {fontWeight: 'bold'}]}>14 November, 9:27 pm</Text>
+                    <Text style={[styles.textSize, {fontWeight: 'bold'}]}>{ requestsInformation.lastUpdate }</Text>
                 </View>
             </View>
         ); 
