@@ -11,22 +11,21 @@ import ListIngredients from './ListIngredients';
 
 const MyList = ({navigation, ingredientsInMyList}) => {
     const [sortString, setSortString] = useState('');
+    const [sortBy, setSortBy] = useState(0);
     const [isRefreshing, setRefreshingState] = useState( false ); //pour savoir si une recharge des ingredients est en cours
     const [errorDataLoading, setErrorDataLoading] = useState(false);
-    const sortByData = useRef( {currentSortBy: 0, currentSortByString: ''} ); 
-  
-    const setCurrentSortBy = (decision) => {
-      sortByData.current.currentSortBy = decision;
-    }
-  
-    const getCurrentSortBy = () => {
-      return sortByData.current.currentSortBy; 
+    const sortByData = useRef( {currentSortByString: ""} ); 
+
+    const compare = (ingredient1, ingredient2) =>
+    {
+      if ( !sortBy )  return ingredient1.name.localeCompare(ingredient2.name);
+      return ingredient1.aisle.localeCompare(ingredient2.aisle);
     }
   
     const setCurrentSortByString = (text) => {
       if(text == 'Backspace')
       {
-        taille = sortByData.current.currentSortByString.length; 
+        let taille = sortByData.current.currentSortByString.length; 
         sortByData.current.currentSortByString = sortByData.current.currentSortByString.substring(0, taille-1);
       }else
       {
@@ -59,7 +58,7 @@ const MyList = ({navigation, ingredientsInMyList}) => {
                 <View style={{marginTop:15}}>
                     <RadioForm
                         radio_props={sortValues}
-                        initial={0}
+                        initial={sortBy}
                         formHorizontal={true}
                         labelHorizontal={true}
                         buttonColor={Colors.mainGrayColor}
@@ -69,7 +68,7 @@ const MyList = ({navigation, ingredientsInMyList}) => {
                         borderWidth={1}
                         buttonSize={10}
                         buttonOuterSize={20}
-                        onPress={(value) => setCurrentSortBy(value) }
+                        onPress={(value) => setSortBy(value) }
                     />
                 </View>
           </View>
@@ -92,19 +91,33 @@ const MyList = ({navigation, ingredientsInMyList}) => {
         return false;
     }
 
+    const getShoppListContainsBySearchWord = () => 
+    {
+      let shoppListContentAfterSearch = []; 
+      let rejected = []; 
+  
+      ingredientsInMyList.forEach(element => {
+        if(element.name.toLowerCase().includes(getCurrentSortByString().toLowerCase())) shoppListContentAfterSearch.push(element);  
+        else rejected.push(element); 
+      });
+  
+      return shoppListContentAfterSearch; 
+    }
+
     const _searchIngredients = () => 
     {
-        return ingredientsInMyList; 
+        ingredientsInMyList = getShoppListContainsBySearchWord(); 
+        return ingredientsInMyList.sort( compare );
     }
 
     const generateListIngredients = () => 
     {
         return (
             <ListIngredients 
-                ingredients={ingredientsInMyList}
+                ingredients={_searchIngredients()}
                 refreshTop={ () => _searchIngredients() } 
                 refreshing={isRefreshing} //une recharge des ingredients est en cours
-                ingredientsExtras={ingredientsInMyList} 
+                ingredientsExtras={_searchIngredients()} 
                 isFrigo={false}
                 isList={true}
                 isAddToFridge={false}

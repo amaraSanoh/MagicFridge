@@ -54,10 +54,7 @@ const MyFridge = ({navigation, ingredientsInMyFridge}) => {
 
   const _refreshProcess = (event) => 
   { 
-    if(event instanceof Object) 
-    {
-      setSortString(getCurrentSortByString()); 
-    }
+    if(event instanceof Object) setSortString(getCurrentSortByString()); 
   }
 
   const GenerateSortIngredientBar = () => 
