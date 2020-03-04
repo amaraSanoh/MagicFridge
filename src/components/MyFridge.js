@@ -11,22 +11,16 @@ import ListIngredients from './ListIngredients';
 
 const MyFridge = ({navigation, ingredientsInMyFridge}) => { 
   const [sortString, setSortString] = useState('');
+  const [sortBy, setSortBy] = useState(0);
   const [isRefreshing, setRefreshingState] = useState( false ); //pour savoir si une recharge des ingredients est en cours
   const [errorDataLoading, setErrorDataLoading] = useState(false);
-  const sortByData = useRef( {currentSortBy: 0, currentSortByString: ''} ); 
+  const sortByData = useRef( { currentSortByString: ""} ); 
 
-  const setCurrentSortBy = (decision) => {
-    sortByData.current.currentSortBy = decision;
-  }
-
-  const getCurrentSortBy = () => {
-    return sortByData.current.currentSortBy; 
-  }
 
   const setCurrentSortByString = (text) => {
     if(text == 'Backspace')
     {
-      taille = sortByData.current.currentSortByString.length; 
+      let taille = sortByData.current.currentSortByString.length; 
       sortByData.current.currentSortByString = sortByData.current.currentSortByString.substring(0, taille-1);
     }else
     {
@@ -38,14 +32,37 @@ const MyFridge = ({navigation, ingredientsInMyFridge}) => {
     return sortByData.current.currentSortByString; 
   }
 
+
+  const compare = (ingredient1, ingredient2) =>
+  {
+    if ( !sortBy )  return ingredient1.name.localeCompare(ingredient2.name);
+    return ingredient1.aisle.localeCompare(ingredient2.aisle);
+  }
+
+  const getFridgeContainsBySearchWord = () => 
+  {
+    let fridgeContentAfterSearch = []; 
+    let rejected = []; 
+ 
+    ingredientsInMyFridge.forEach(element => {
+      if(element.name.toLowerCase().includes(getCurrentSortByString().toLowerCase())) fridgeContentAfterSearch.push(element);  
+      else rejected.push(element); 
+    });
+ 
+    return fridgeContentAfterSearch; 
+  }
+
   const _refreshProcess = (event) => 
   { 
-    if(event instanceof Object) setSortString(getCurrentSortByString()); 
+    if(event instanceof Object) 
+    {
+      setSortString(getCurrentSortByString()); 
+    }
   }
 
   const GenerateSortIngredientBar = () => 
   {
-    const sortValues = [ {label: 'Name', value: 0}, {label: 'Aisle', value: 1} ]; 
+    const sortValues = [ {label: 'Name          ', value: 0}, {label: 'Aisle          ', value: 1} ]; 
     
     return (
         <View style={ {marginBottom: 12} }>
@@ -59,7 +76,7 @@ const MyFridge = ({navigation, ingredientsInMyFridge}) => {
               <View style={{marginTop:15}}>
                   <RadioForm
                       radio_props={sortValues}
-                      initial={0}
+                      initial={sortBy}
                       formHorizontal={true}
                       labelHorizontal={true}
                       buttonColor={Colors.mainGrayColor}
@@ -69,7 +86,7 @@ const MyFridge = ({navigation, ingredientsInMyFridge}) => {
                       borderWidth={1}
                       buttonSize={10}
                       buttonOuterSize={20}
-                      onPress={(value) => setCurrentSortBy(value) }
+                      onPress={(value) => setSortBy(value) }
                   />
               </View>
         </View>
@@ -81,10 +98,7 @@ const MyFridge = ({navigation, ingredientsInMyFridge}) => {
     return (
       <View>
           <TouchableOpacity style={styles.btnAddNewIngredient} onPress={() => _navigateToAddNewIngredient(ingredientString)} >
-            <View style={[{flexDirection: 'row'}]}>
-                <Text style={[{color: 'white', flex: 1}]}>+</Text>
-                <Text style={[{color: 'white', flex: 5, justifyContent: 'center'}]}>Add new ingredient</Text>
-            </View>
+                <Text style={[{color: 'white', alignSelf: 'center'}]}>+ Add new ingredient</Text>
           </TouchableOpacity>
       </View>
     ); 
@@ -93,16 +107,17 @@ const MyFridge = ({navigation, ingredientsInMyFridge}) => {
 
   const _searchIngredients = () => 
   {
-    return ingredientsInMyFridge; 
+    ingredientsInMyFridge = getFridgeContainsBySearchWord(); 
+    return ingredientsInMyFridge.sort( compare );  
   }
 
   const generateListIngredients = () => {
     return(
         <ListIngredients 
-          ingredients={ingredientsInMyFridge}
+          ingredients={_searchIngredients()}
           refreshTop={ () => _searchIngredients() } 
           refreshing={isRefreshing} //une recharge des ingredients est en cours
-          ingredientsExtras={ingredientsInMyFridge} 
+          ingredientsExtras={_searchIngredients()} 
           isFrigo={true}
           isList={false}
           isAddToFridge={false}

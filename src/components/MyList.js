@@ -45,7 +45,7 @@ const MyList = ({navigation, ingredientsInMyList}) => {
   
     const GenerateSortIngredientBar = () => 
     {
-      const sortValues = [ {label: 'Name', value: 0}, {label: 'Aisle', value: 1} ]; 
+      const sortValues = [ {label: 'Name          ', value: 0}, {label: 'Aisle          ', value: 1} ]; 
       
       return (
           <View style={ {marginBottom: 12} }>
@@ -81,16 +81,11 @@ const MyList = ({navigation, ingredientsInMyList}) => {
       return (
         <View>
             <TouchableOpacity style={styles.btnAddNewIngredient} onPress={() => _navigateToAddNewIngredient(ingredientString)} >
-              <View style={[{flexDirection: 'row'}]}>
-                  <Text style={[{color: 'white', flex: 1}]}>+</Text>
-                  <Text style={[{color: 'white', flex: 5, justifyContent: 'center'}]}>Add new ingredient</Text>
-              </View>
+                  <Text style={[{color: 'white', alignSelf: 'center'}]}>+ Add new ingredient</Text>
             </TouchableOpacity>
         </View>
       ); 
     }
-
-    //ici
 
     const _isItSaved = (ingredient) => {
         if(ingredientsInMyList.findIndex(ingred => ingred.id === ingredient.id) !== -1 ) return true; 
