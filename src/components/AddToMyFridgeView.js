@@ -18,12 +18,20 @@ const AddToMyFridgeView = ({navigation, ingredientsInMyFridge, dispatch}) => {
   const [sortString, setSortString] = useState('');
   const [isRefreshing, setRefreshingState] = useState( false ); //pour savoir si une recharge des ingredients est en cours
   const [errorDataLoading, setErrorDataLoading] = useState(false);
-  const sortByData = useRef( {currentSortBy: 0, currentSortByString: ''} ); 
+  const sortByData = useRef( {currentSortBy: 0, currentSortByString: '', currentRefreshDetector: false} ); 
 
   useEffect(() => {
-    _searchIngredients(); 
+    _searchIngredients();
   }, []); //le deuxième paramètre permet de ne pas appeler la fonction à chaque fois
   
+
+  const setCurrentRefreshDetector = () => {
+    sortByData.current.currentRefreshDetector = true;
+  }
+
+  const getCurrentRefreshDetector = () => {
+    return sortByData.current.currentRefreshDetector; 
+  }
 
   const setCurrentSortBy = (decision) => {
     sortByData.current.currentSortBy = decision;
@@ -34,11 +42,16 @@ const AddToMyFridgeView = ({navigation, ingredientsInMyFridge, dispatch}) => {
   }
 
   const setCurrentSortByString = (text) => {
+
+    if( !getCurrentRefreshDetector() )
+    {
+      sortByData.current.currentSortByString = navigation.getParam("ingredientString");
+    }
+    
     if(text == 'Backspace')
     {
       let taille = sortByData.current.currentSortByString.length; 
-      if(taille > 1)
-        sortByData.current.currentSortByString = sortByData.current.currentSortByString.substring(0, taille-1); 
+      sortByData.current.currentSortByString = sortByData.current.currentSortByString.substring(0, taille-1); 
     }
     else if(text.length == 1 || text.length == '1')
     {
@@ -60,7 +73,7 @@ const AddToMyFridgeView = ({navigation, ingredientsInMyFridge, dispatch}) => {
     setRefreshingState(true); 
     try 
     {
-      var datas = ( await getIngredientsAutoc( (sortString.length <= 0) ? navigation.getParam("ingredientString") : getCurrentSortByString()) );
+      var datas = ( await getIngredientsAutoc( getCurrentSortByString() ));
       let spoonacularSearchResult = datas.data;
       let headers = datas.headers;
       setIngredients( spoonacularSearchResult ); 
@@ -107,6 +120,8 @@ const AddToMyFridgeView = ({navigation, ingredientsInMyFridge, dispatch}) => {
   const _refreshProcess = (evnmt) => 
   { 
     if(evnmt instanceof Object) {
+      if(!getCurrentRefreshDetector() && getCurrentSortByString() == '') setCurrentSortByString(navigation.getParam("ingredientString")); 
+      setCurrentRefreshDetector();
       setSortString(getCurrentSortByString());
       _searchIngredients(); 
     }
@@ -114,8 +129,7 @@ const AddToMyFridgeView = ({navigation, ingredientsInMyFridge, dispatch}) => {
 
   const GenerateSortIngredientBar = () => 
   {
-    const sortValues = [ {label: 'Name', value: 0}, {label: 'Aisle', value: 1} ];   
-    if(sortString.length <= 0) setCurrentSortByString(navigation.getParam("ingredientString"));
+    const sortValues = [ {label: 'Name          ', value: 0}, {label: 'Aisle          ', value: 1} ];   
     
     return (
         <View style={ {marginBottom: 12} }>
@@ -124,7 +138,7 @@ const AddToMyFridgeView = ({navigation, ingredientsInMyFridge, dispatch}) => {
                   style={{padding: 5, borderBottomColor: Colors.mainOrangeColor, borderBottomWidth: 2}} 
                   onKeyPress={ (text) => setCurrentSortByString(text.nativeEvent.key) }
                   onSubmitEditing={ (evnmt) => _refreshProcess(evnmt) }
-                  defaultValue={ (sortString.length <= 0 ) ? navigation.getParam("ingredientString") : getCurrentSortByString()}
+                  defaultValue={ (getCurrentRefreshDetector()) ? getCurrentSortByString() : navigation.getParam("ingredientString") }
               />
               <View style={{marginTop:15}}>
                   <RadioForm
