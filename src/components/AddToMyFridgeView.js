@@ -62,6 +62,12 @@ const AddToMyFridgeView = ({navigation, ingredientsInMyFridge, dispatch}) => {
     dispatch(action);  
   }
 
+  const compare = (ingredient1, ingredient2) =>
+  {
+    if ( !sortBy )  return ingredient1.name.localeCompare(ingredient2.name);
+    return ingredient1.aisle.localeCompare(ingredient2.aisle);
+  }
+
   const _loadIngredients = async () => {
     setRefreshingState(true); 
     try 
@@ -69,7 +75,7 @@ const AddToMyFridgeView = ({navigation, ingredientsInMyFridge, dispatch}) => {
       var datas = ( await getIngredientsAutoc( (getCurrentRefreshDetector()) ? getCurrentSortByString() : navigation.getParam("ingredientString") ));
       let spoonacularSearchResult = datas.data;
       let headers = datas.headers;
-      setIngredients( spoonacularSearchResult ); 
+      setIngredients( spoonacularSearchResult.sort( compare ) ); 
       setErrorDataLoading(false);
       
       _updateCredit(headers);
@@ -98,10 +104,10 @@ const AddToMyFridgeView = ({navigation, ingredientsInMyFridge, dispatch}) => {
   const generateListIngredients = () => {
     return(
         <ListIngredients 
-          ingredients={ingredients}
+          ingredients={ingredients.sort( compare )}
           refreshTop={ () => _searchIngredients() } 
           refreshing={isRefreshing} //une recharge des ingredients est en cours
-          ingredientsExtras={ingredientsInMyFridge} 
+          ingredientsExtras={ingredientsInMyFridge.sort( compare )} 
           isFrigo={false}
           isList={false}
           isAddToFridge={!navigation.getParam("isMyList")}
