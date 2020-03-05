@@ -73,7 +73,7 @@ const AddToMyFridgeView = ({navigation, ingredientsInMyFridge, dispatch}) => {
     setRefreshingState(true); 
     try 
     {
-      var datas = ( await getIngredientsAutoc( getCurrentSortByString() ));
+      var datas = ( await getIngredientsAutoc( (getCurrentRefreshDetector()) ? getCurrentSortByString() : navigation.getParam("ingredientString") ));
       let spoonacularSearchResult = datas.data;
       let headers = datas.headers;
       setIngredients( spoonacularSearchResult ); 
