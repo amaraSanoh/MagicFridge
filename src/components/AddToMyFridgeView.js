@@ -14,11 +14,12 @@ import { totalCreditPerDay, UPDATE_CREDIT, updateCredit } from '../constants/Cre
 
 
 const AddToMyFridgeView = ({navigation, ingredientsInMyFridge, dispatch}) => {
-  const [ingredients, setIngredients] = useState([]);  
+  const [ingredients, setIngredients] = useState([]); 
+  const [sortBy, setSortBy] = useState(0); 
   const [sortString, setSortString] = useState('');
   const [isRefreshing, setRefreshingState] = useState( false ); //pour savoir si une recharge des ingredients est en cours
   const [errorDataLoading, setErrorDataLoading] = useState(false);
-  const sortByData = useRef( {currentSortBy: 0, currentSortByString: '', currentRefreshDetector: false} ); 
+  const sortByData = useRef( {currentSortByString: '', currentRefreshDetector: false} ); 
 
   useEffect(() => {
     _searchIngredients();
@@ -31,14 +32,6 @@ const AddToMyFridgeView = ({navigation, ingredientsInMyFridge, dispatch}) => {
 
   const getCurrentRefreshDetector = () => {
     return sortByData.current.currentRefreshDetector; 
-  }
-
-  const setCurrentSortBy = (decision) => {
-    sortByData.current.currentSortBy = decision;
-  }
-
-  const getCurrentSortBy = () => {
-    return sortByData.current.currentSortBy; 
   }
 
   const setCurrentSortByString = (text) => {
@@ -143,7 +136,7 @@ const AddToMyFridgeView = ({navigation, ingredientsInMyFridge, dispatch}) => {
               <View style={{marginTop:15}}>
                   <RadioForm
                       radio_props={sortValues}
-                      initial={0}
+                      initial={sortBy}
                       formHorizontal={true}
                       labelHorizontal={true}
                       buttonColor={Colors.mainGrayColor}
@@ -153,7 +146,7 @@ const AddToMyFridgeView = ({navigation, ingredientsInMyFridge, dispatch}) => {
                       borderWidth={1}
                       buttonSize={10}
                       buttonOuterSize={20}
-                      onPress={(value) => setCurrentSortBy(value) }
+                      onPress={(value) => setSortBy(value) }
                   />
               </View>
         </View>
