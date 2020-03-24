@@ -1,19 +1,18 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import Me from './src/components/Me';
+import Setting from './src/components/Setting';
+import Search from './src/components/Search';
+import Recipe from './src/components/Recipe';
+import Navigation from './src/navigation/Navigation';
+import { Provider } from 'react-redux';
+import { Store } from './src/store/Config';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
+    <Provider store={ Store }>
+        <Navigation/>
+    </Provider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
